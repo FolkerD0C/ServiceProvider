@@ -72,16 +72,13 @@ public sealed class ServiceProviderBuilder : IServiceProviderBuilder
         {
             throw new InvalidOperationException($"{implementationType} is not assignable to {typeof(TContract)}");
         }
-
-        if (_registeredTypes.ContainsKey(typeof(TContract)))
-        {
-            return;
-        }
+        
         if (typeof(TContract).IsGenericType && implementationType.IsGenericTypeDefinition)
         {
             implementationType = implementationType.MakeGenericType(typeof(TContract).GenericTypeArguments);
         }
 
+        _registeredTypes.Remove(typeof(TContract));
         _registeredTypes.Add(typeof(TContract), new RegisteredType<TContract>(implementationType, scope, instantiator));
     }
     #endregion
