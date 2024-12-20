@@ -12,7 +12,7 @@ public interface IServiceProviderBuilder
     /// <param name="scope">The expiration scope associated with the service.</param>
     /// <param name="instantiator">An optional factory method to create instances of the service.</param>
     /// <returns>The current <see cref="IServiceProviderBuilder"/> instance.</returns>
-    IServiceProviderBuilder AddScoped<TImplementation>(IExpirationScope scope, Func<TImplementation>? instantiator);
+    IServiceProviderBuilder AddScoped<TImplementation>(IExpirationScope scope, Func<TImplementation>? instantiator = null);
 
     /// <summary>
     /// Registers a scoped service with a contract type and an implementation type, and associates it with an expiration scope.
@@ -22,7 +22,7 @@ public interface IServiceProviderBuilder
     /// <param name="scope">The expiration scope associated with the service.</param>
     /// <param name="instantiator">An optional factory method to create instances of the service.</param>
     /// <returns>The current <see cref="IServiceProviderBuilder"/> instance.</returns>
-    IServiceProviderBuilder AddScoped<TContract, TImplementation>(IExpirationScope scope, Func<TContract>? instantiator);
+    IServiceProviderBuilder AddScoped<TContract, TImplementation>(IExpirationScope scope, Func<TContract>? instantiator = null);
 
     /// <summary>
     /// Registers a singleton service with the specified implementation type.
@@ -30,7 +30,7 @@ public interface IServiceProviderBuilder
     /// <typeparam name="TImplementation">The type of the implementation to register.</typeparam>
     /// <param name="instantiator">An optional factory method to create a single instance of the service.</param>
     /// <returns>The current <see cref="IServiceProviderBuilder"/> instance.</returns>
-    IServiceProviderBuilder AddSingleton<TImplementation>(Func<TImplementation>? instantiator);
+    IServiceProviderBuilder AddSingleton<TImplementation>(Func<TImplementation>? instantiator = null);
 
     /// <summary>
     /// Registers a singleton service with a contract type and an implementation type.
@@ -39,7 +39,7 @@ public interface IServiceProviderBuilder
     /// <typeparam name="TImplementation">The type of the implementation to register.</typeparam>
     /// <param name="instantiator">An optional factory method to create a single instance of the service.</param>
     /// <returns>The current <see cref="IServiceProviderBuilder"/> instance.</returns>
-    IServiceProviderBuilder AddSingleton<TContract, TImplementation>(Func<TContract>? instantiator);
+    IServiceProviderBuilder AddSingleton<TContract, TImplementation>(Func<TContract>? instantiator = null);
 
     /// <summary>
     /// Registers a transient service with the specified implementation type.
@@ -47,7 +47,7 @@ public interface IServiceProviderBuilder
     /// <typeparam name="TImplementation">The type of the implementation to register.</typeparam>
     /// <param name="instantiator">An optional factory method to create new instances of the service each time it is resolved.</param>
     /// <returns>The current <see cref="IServiceProviderBuilder"/> instance.</returns>
-    IServiceProviderBuilder AddTransient<TImplementation>(Func<TImplementation>? instantiator);
+    IServiceProviderBuilder AddTransient<TImplementation>(Func<TImplementation>? instantiator = null);
 
     /// <summary>
     /// Registers a transient service with a contract type and an implementation type.
@@ -56,7 +56,7 @@ public interface IServiceProviderBuilder
     /// <typeparam name="TImplementation">The type of the implementation to register.</typeparam>
     /// <param name="instantiator">An optional factory method to create new instances of the service each time it is resolved.</param>
     /// <returns>The current <see cref="IServiceProviderBuilder"/> instance.</returns>
-    IServiceProviderBuilder AddTransient<TContract, TImplementation>(Func<TContract>? instantiator);
+    IServiceProviderBuilder AddTransient<TContract, TImplementation>(Func<TContract>? instantiator = null);
 
     /// <summary>
     /// Builds the service provider, finalizing the service registrations and creating an <see cref="IServiceProvider"/> instance.
