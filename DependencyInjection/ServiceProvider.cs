@@ -2,7 +2,7 @@
 
 public class ServiceProvider : IServiceProvider
 {
-    public void Resolve<TContract>()
+    public TContract Resolve<TContract>()
     {
         throw new NotImplementedException();
     }
