@@ -6,6 +6,12 @@ namespace FolkerD0C.DependencyInjection;
 public interface IServiceProvider
 {
     /// <summary>
+    /// Retrieves all currently registered services.
+    /// </summary>
+    /// <returns>An enumerable collection of registered service types.</returns>
+    IEnumerable<Type> GetRegisteredServices();
+
+    /// <summary>
     /// Resolves a service instance of the specified contract type.
     /// </summary>
     /// <typeparam name="TContract">The type of the contract to resolve.</typeparam>

@@ -16,20 +16,27 @@ public class ServiceProvider : IServiceProvider
         _registeredTypes = registeredTypes;
     }
 
+    #region Public methods
+    /// <inheritdoc/>
+    public IEnumerable<Type> GetRegisteredServices()
+        => _registeredTypes.Select(kvp => kvp.Key);
+
     /// <inheritdoc/>
     public TContract Resolve<TContract>()
     {
         var registeredType = GetRegisteredType<TContract>();
 
-        return InternalResolve(registeredType);
+        return InternalResolve<TContract>(registeredType);
     }
+    #endregion
 
     #region Private methods
-    private TContract Create<TContract>(RegisteredType<TContract> registeredType)
+    private TContract Create<TContract>(RegisteredType registeredType)
     {
-        if (registeredType.Instantiator is not null)
+        if (registeredType is RegisteredType<TContract> parameterizedRegisteredType
+            && parameterizedRegisteredType.Instantiator is not null)
         {
-            return registeredType.Instantiator();
+            return parameterizedRegisteredType.Instantiator();
         }
 
         if (_resolveMethod == null)
@@ -59,23 +66,26 @@ public class ServiceProvider : IServiceProvider
         return result.GuardedCast<TContract>();
     }
 
-    private RegisteredType<TContract> GetRegisteredType<TContract>()
+    private RegisteredType GetRegisteredType<TContract>()
     {
         if (_registeredTypes.TryGetValue(typeof(TContract), out RegisteredType? registeredType)
             || (typeof(TContract).IsGenericType
                 && _registeredTypes.TryGetValue(typeof(TContract).GetGenericTypeDefinition(), out registeredType)))
         {
             if (registeredType is RegisteredType<TContract> parameterizedRegisteredType)
+            {
                 return parameterizedRegisteredType;
+            }
+            return registeredType;
         }
         throw new InvalidOperationException($"{typeof(TContract)} is not a registered type.");
     }
 
-    private TContract HandleExpiredScope<TContract>(RegisteredType<TContract> registeredType)
+    private TContract HandleExpiredScope<TContract>(RegisteredType registeredType)
     {
         _cachedObjects.Remove(typeof(TContract));
 
-        TContract result = Create(registeredType);
+        TContract result = Create<TContract>(registeredType);
 
         if (registeredType.Scope.IsRenewable)
         {
@@ -89,23 +99,23 @@ public class ServiceProvider : IServiceProvider
         return result;
     }
 
-    private TContract HandleValidScope<TContract>(RegisteredType<TContract> registeredType)
+    private TContract HandleValidScope<TContract>(RegisteredType registeredType)
     {
         if (_cachedObjects.ContainsKey(typeof(TContract)))
         {
             return _cachedObjects[typeof(TContract)].GuardedCast<TContract>();
         }
 
-        TContract result = Create(registeredType);
+        TContract result = Create<TContract>(registeredType);
         _cachedObjects.Add(typeof(TContract), result);
         return result;
     }
 
-    private TContract InternalResolve<TContract>(RegisteredType<TContract> registeredType)
+    private TContract InternalResolve<TContract>(RegisteredType registeredType)
     {
         return registeredType.Scope.IsValidCurrently
-            ? HandleValidScope(registeredType)
-            : HandleExpiredScope(registeredType);
+            ? HandleValidScope<TContract>(registeredType)
+            : HandleExpiredScope<TContract>(registeredType);
     }
     #endregion
 }

@@ -79,7 +79,10 @@ public sealed class ServiceProviderBuilder : IServiceProviderBuilder
         }
 
         _registeredTypes.Remove(typeof(TContract));
-        _registeredTypes.Add(typeof(TContract), new RegisteredType<TContract>(implementationType, scope, instantiator));
+        RegisteredType registerable = instantiator is null
+            ? new RegisteredType(implementationType, scope)
+            : new RegisteredType<TContract>(implementationType, scope, instantiator);
+        _registeredTypes.Add(typeof(TContract), registerable);
     }
     #endregion
 }

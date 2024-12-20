@@ -50,6 +50,7 @@ public class ServiceProviderBuilderShould
         string expectedStringService = _fixture.Create<string>();
         int expectedIntService = _fixture.Create<int>();
         IGuidGetterService expectedTestService = new TestService();
+        int expectedRegisteredServiceCount = 3;
 
         var provider = _sut
             .AddSingleton(() => expectedStringService)
@@ -63,6 +64,7 @@ public class ServiceProviderBuilderShould
         actualStringService.Should().Be(expectedStringService);
         actualIntService.Should().Be(expectedIntService);
         actualGuidService.GetGuid().Should().Be(expectedTestService.GetGuid());
+        provider.GetRegisteredServices().Count().Should().Be(expectedRegisteredServiceCount);
     }
 
     [Fact]
@@ -85,5 +87,14 @@ public class ServiceProviderBuilderShould
             .Should()
             .Throw<InvalidOperationException>()
             .WithMessage("* is not assignable to *");
+    }
+
+    [Fact]
+    public void DefaultInstanceIsEmpty()
+    {
+        int expectedRegisteredTypeCount = 0;
+        var sut = ServiceProviderBuilder.DefaultInstance;
+
+        sut.Build().GetRegisteredServices().Count().Should().Be(expectedRegisteredTypeCount);
     }
 }
