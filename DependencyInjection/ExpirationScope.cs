@@ -14,17 +14,18 @@ internal static class ExpirationScope
 
     private class FixedExpirationScope : IExpirationScope
     {
-        private readonly bool _isExpired;
+        private readonly bool _isValid;
 
-        internal FixedExpirationScope(bool isExpired)
+        internal FixedExpirationScope(bool isValid)
         {
-            _isExpired = isExpired;
+            _isValid = isValid;
         }
 
-        public bool IsValidCurrently()
-        {
-            return _isExpired;
-        }
+        public bool IsRenewable
+            => _isValid;
+
+        public bool IsValidCurrently
+            => _isValid;
 
         public void Renew()
         {
