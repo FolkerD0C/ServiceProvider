@@ -1,5 +1,7 @@
+using System.Reflection;
 using AutoFixture;
 using FluentAssertions;
+using FolkerD0C.DependencyInjection.Exceptions;
 using FolkerD0C.DependencyInjection.Tests.Services;
 
 namespace FolkerD0C.DependencyInjection.Tests;
@@ -161,5 +163,30 @@ public class ServiceProviderShould
             .Should()
             .Throw<ApplicationException>()
             .WithMessage(expectedMessage);
+    }
+
+    [Fact]
+    public void ThrowIfDefaultIsRequestedButHasNotBeenBuiltYet()
+    {
+        GlobalStateResetter();
+        Action gettingDefaultInstance = () =>
+        {
+            var instance = ServiceProvider.DefaultInstance;
+        };
+
+        gettingDefaultInstance
+            .Should()
+            .Throw<NullReferenceException>();
+    }
+
+    private void GlobalStateResetter()
+    {
+        var allStaticNonpublicFields = typeof(ServiceProvider).GetFields(BindingFlags.Static | BindingFlags.NonPublic);
+        var defaultInstanceFieldInfo = allStaticNonpublicFields.FirstOrDefault(field => field.Name.Equals("s_defaultInstance"));
+        if (defaultInstanceFieldInfo is null)
+        {
+            return;
+        }
+        defaultInstanceFieldInfo.SetValue(null, null);
     }
 }

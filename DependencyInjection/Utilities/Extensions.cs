@@ -1,4 +1,6 @@
-namespace FolkerD0C.DependencyInjection;
+using FolkerD0C.DependencyInjection.Exceptions;
+
+namespace FolkerD0C.DependencyInjection.Utilities;
 
 internal static class Extensions
 {

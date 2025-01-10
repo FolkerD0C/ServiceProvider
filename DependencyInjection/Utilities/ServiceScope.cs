@@ -1,4 +1,4 @@
-﻿namespace FolkerD0C.DependencyInjection;
+﻿namespace FolkerD0C.DependencyInjection.Utilities;
 
 internal static class ServiceScope
 {

@@ -1,15 +1,30 @@
-﻿using System.Reflection;
+﻿using FolkerD0C.DependencyInjection.Exceptions;
+using FolkerD0C.DependencyInjection.Utilities;
+using System.Reflection;
 
 namespace FolkerD0C.DependencyInjection;
 
 /// <summary>
 /// Provides an implementation for the <see cref="IServiceProvider"/> interface.
 /// </summary>
-public class ServiceProvider : IServiceProvider
+public sealed class ServiceProvider : IServiceProvider
 {
+    private static IServiceProvider? s_defaultInstance;
     private readonly Dictionary<Type, RegisteredType> _registeredTypes;
     private readonly Dictionary<Type, object?> _cachedObjects = [];
     private MethodInfo? _resolveMethod;
+
+    public static IServiceProvider DefaultInstance
+    {
+        get
+        {
+            if (s_defaultInstance is null)
+            {
+                throw new NullReferenceException("Default service provider has not been built yet.");
+            }
+            return s_defaultInstance;
+        }
+    }
 
     internal ServiceProvider(Dictionary<Type, RegisteredType> registeredTypes)
     {
@@ -17,6 +32,11 @@ public class ServiceProvider : IServiceProvider
     }
 
     #region Public methods
+    public static void BuildDefaultProvider()
+    {
+        s_defaultInstance ??= ServiceProviderBuilder.DefaultInstance.Build();
+    }
+
     /// <inheritdoc/>
     public IEnumerable<Type> GetRegisteredServiceTypes()
         => _registeredTypes.Select(kvp => kvp.Key);
