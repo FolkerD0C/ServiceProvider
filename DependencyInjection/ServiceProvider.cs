@@ -4,25 +4,28 @@ using System.Reflection;
 
 namespace FolkerD0C.DependencyInjection;
 
-/// <summary>
-/// Provides an implementation for the <see cref="IServiceProvider"/> interface.
-/// </summary>
+/// <inheritdoc cref="IServiceProvider"/>
 public sealed class ServiceProvider : IServiceProvider
 {
-    private static IServiceProvider? s_defaultInstance;
+    private static IServiceProvider? s_defaultProvider;
     private readonly Dictionary<Type, RegisteredType> _registeredTypes;
     private readonly Dictionary<Type, object?> _cachedObjects = [];
     private MethodInfo? _resolveMethod;
 
-    public static IServiceProvider DefaultInstance
+    /// <summary>
+    /// Gets the default instance. Throws a <see cref="NullReferenceException"/> if
+    /// it has not been built yet. Use the <see cref="BuildDefaultProvider"/>
+    /// method to build the deafult instance.
+    /// </summary>
+    public static IServiceProvider DefaultProvider
     {
         get
         {
-            if (s_defaultInstance is null)
+            if (s_defaultProvider is null)
             {
                 throw new NullReferenceException("Default service provider has not been built yet.");
             }
-            return s_defaultInstance;
+            return s_defaultProvider;
         }
     }
 
@@ -32,9 +35,13 @@ public sealed class ServiceProvider : IServiceProvider
     }
 
     #region Public methods
+    /// <summary>
+    /// Used only for building the default instance. If it is already build
+    /// then this method has no effect.
+    /// </summary>
     public static void BuildDefaultProvider()
     {
-        s_defaultInstance ??= ServiceProviderBuilder.DefaultInstance.Build();
+        s_defaultProvider ??= ServiceProviderBuilder.DefaultBuilder.Build();
     }
 
     /// <inheritdoc/>
@@ -152,6 +159,12 @@ public sealed class ServiceProvider : IServiceProvider
         return registeredType.Scope.IsValidCurrently
             ? HandleValidScope<TContract>(registeredType)
             : HandleExpiredScope<TContract>(registeredType);
+    }
+
+    public void Reset()
+    {
+        _registeredTypes.Clear();
+        _cachedObjects.Clear();
     }
     #endregion
 }

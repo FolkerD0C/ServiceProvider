@@ -1,21 +1,25 @@
 namespace FolkerD0C.DependencyInjection.Exceptions;
 
 /// <summary>
-/// Represents the base exception type for errors related to dependency injection.
+/// Represents the base exception type for all exceptions inside this package.
 /// </summary>
-public abstract class DependencyInjectionException : Exception
+public abstract class DependencyInjectionBaseException(string message) : Exception(message)
 {
-    private readonly Type _serviceType;
+}
+
+/// <summary>
+/// Represents the base exception type for errors related to
+/// <see cref="IServiceProvider"/> and <see cref="IServiceProviderBuilder"/>.
+/// </summary>
+public abstract class DependencyInjectionException(Type serviceType, string message)
+    : DependencyInjectionBaseException(message)
+{
+    private readonly Type _serviceType = serviceType;
 
     /// <summary>
     /// Gets the type of the service that caused the exception.
     /// </summary>
     public Type ServiceType => _serviceType;
-
-    internal DependencyInjectionException(Type serviceType, string message) : base(message)
-    {
-        _serviceType = serviceType;
-    }
 }
 
 /// <summary>
@@ -30,7 +34,8 @@ public sealed class ServiceTypeNotAssignableException : DependencyInjectionExcep
     /// </summary>
     public Type AssigneeType => _assigneeType;
 
-    internal ServiceTypeNotAssignableException(Type serviceType, Type assigneeType) : base(serviceType, $"{assigneeType} is not assignable to {serviceType}.")
+    internal ServiceTypeNotAssignableException(Type serviceType, Type assigneeType)
+        : base(serviceType, $"{assigneeType} is not assignable to {serviceType}.")
     {
         _assigneeType = assigneeType;
     }
@@ -49,7 +54,8 @@ public sealed  class ServiceTypeNotCastableException : DependencyInjectionExcept
     /// </summary>
     public Type OriginalType => _originalType;
 
-    internal ServiceTypeNotCastableException(Type serviceType, Type originalType) : base(serviceType, $"{originalType} type cannot be cast to {serviceType}.")
+    internal ServiceTypeNotCastableException(Type serviceType, Type originalType)
+        : base(serviceType, $"{originalType} type cannot be cast to {serviceType}.")
     {
         _originalType = originalType;
     }
@@ -60,7 +66,8 @@ public sealed  class ServiceTypeNotCastableException : DependencyInjectionExcept
 /// </summary>
 public sealed class ServiceTypeNotInstantiatableException : DependencyInjectionException
 {
-    internal ServiceTypeNotInstantiatableException(Type serviceType) : base(serviceType, $"{serviceType} is not an instantiatable type.")
+    internal ServiceTypeNotInstantiatableException(Type serviceType)
+        : base(serviceType, $"{serviceType} is not an instantiatable type.")
     {
     }
 }
@@ -70,60 +77,108 @@ public sealed class ServiceTypeNotInstantiatableException : DependencyInjectionE
 /// </summary>
 public sealed class ServiceTypeNotRegisteredException : DependencyInjectionException
 {
-    internal ServiceTypeNotRegisteredException(Type serviceType) : base(serviceType, $"{serviceType} is not a registered type.")
+    internal ServiceTypeNotRegisteredException(Type serviceType)
+        : base(serviceType, $"{serviceType} is not a registered type.")
     {
     }
 }
 
 /// <summary>
-/// Represents the base exception type for errors related to the global state of dependency injection.
+/// Represents the base exception type for errors related to dependency injection collections,
+/// specifically <see cref="Collections.IServiceProviderCollection"/>
+/// and <see cref="Collections.IServiceProviderBuilderCollection"/>.
 /// </summary>
-public abstract class DependencyInjectionGlobalStateException : Exception
+public abstract class DependencyInjectionCollectionException(string message)
+    : DependencyInjectionBaseException(message)
 {
-    public DependencyInjectionGlobalStateException(string message) : base(message)
+}
+
+/// <summary>
+/// Represents an exception that is thrown when an invalid service provider is encountered.
+/// </summary>
+public class InvalidServiceProviderException : DependencyInjectionCollectionException
+{
+    private readonly IServiceProvider? _serviceProvider;
+
+    /// <summary>
+    /// Gets the invalid service provider that caused the exception.
+    /// </summary>
+    public IServiceProvider? ServiceProvider => _serviceProvider;
+
+    internal InvalidServiceProviderException(IServiceProvider? serviceProvider)
+        : base($"Invalid service provider '{serviceProvider}")
     {
+        _serviceProvider = serviceProvider;
     }
 }
 
-public sealed class InvalidServiceProviderKeyException : DependencyInjectionGlobalStateException
+/// <summary>
+/// Represents an exception that is thrown when an invalid service provider key is encountered.
+/// </summary>
+public sealed class InvalidServiceProviderKeyException : DependencyInjectionCollectionException
 {
     private readonly object? _invalidKey;
 
+    /// <summary>
+    /// Gets the invalid key that caused the exception.
+    /// </summary>
     public object? InvalidKey => _invalidKey;
 
-    internal InvalidServiceProviderKeyException(object? invalidKey) : base($"Invalid service provider key: '{invalidKey}'.")
+    internal InvalidServiceProviderKeyException(object? invalidKey)
+        : base($"Invalid service provider key: '{invalidKey}'.")
     {
         _invalidKey = invalidKey;
     }
 }
 
-public sealed class ServiceProviderAlreadyExistsException : DependencyInjectionGlobalStateException
+
+/// <summary>
+/// Represents an exception that is thrown when a service provider with a specified key already exists in the collection.
+/// </summary>
+public sealed class ServiceProviderAlreadyExistsException : DependencyInjectionCollectionException
 {
     private readonly object _serviceProviderKey;
 
+    /// <summary>
+    /// Gets the key of the service provider that already exists.
+    /// </summary>
     public object ServiceProviderKey => _serviceProviderKey;
 
-    internal ServiceProviderAlreadyExistsException(object serviceProviderKey) : base($"Service provider with key '{serviceProviderKey}' already exists.")
+    internal ServiceProviderAlreadyExistsException(object serviceProviderKey)
+        : base($"Service provider with key '{serviceProviderKey}' already exists.")
     {
         _serviceProviderKey = serviceProviderKey;
     }
 }
 
-public sealed class ServiceProviderNotFoundException : DependencyInjectionGlobalStateException
+/// <summary>
+/// Represents an exception that is thrown when a service
+/// provider with a specified key is not found in the collection.
+/// </summary>
+public sealed class ServiceProviderNotFoundException : DependencyInjectionCollectionException
 {
     private readonly object _serviceProviderKey;
 
+    /// <summary>
+    /// Gets the key of the service provider that was not found.
+    /// </summary>
     public object ServiceProviderKey => _serviceProviderKey;
 
-    internal ServiceProviderNotFoundException(object serviceProviderKey) : base($"Service provider with key '{serviceProviderKey}' was not found.")
+    internal ServiceProviderNotFoundException(object serviceProviderKey)
+        : base($"Service provider with key '{serviceProviderKey}' was not found.")
     {
         _serviceProviderKey = serviceProviderKey;
     }
 }
 
-public class ServiceProvidersHaveBeenBuiltException : DependencyInjectionGlobalStateException
+/// <summary>
+/// Represents an exception that is thrown when an attempt is made to
+/// rebuild a service provider collection after it has already been built.
+/// </summary>
+public class ServiceProvidersHaveBeenBuiltException : DependencyInjectionCollectionException
 {
-    internal ServiceProvidersHaveBeenBuiltException() : base("Service providers collections can only be built once.")
+    internal ServiceProvidersHaveBeenBuiltException()
+        : base("Service providers collections can only be built once.")
     {
     }
 }

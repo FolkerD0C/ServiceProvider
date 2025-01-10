@@ -1,8 +1,35 @@
 namespace FolkerD0C.DependencyInjection.Collections;
 
-public interface IServiceProviderBuilderCollection
+/// <summary>
+/// Represents a collection of service provider builders that can construct a collection of service providers.
+/// </summary>
+public interface IServiceProviderBuilderCollection : IResettable
 {
+    /// <summary>
+    /// Builds and returns a collection of service providers from the builders in the collection.
+    /// After building the providers it disposes the builder collection.
+    /// </summary>
+    /// <returns>
+    /// An <see cref="IServiceProviderCollection"/> containing all service providers
+    /// built from the builders in the collection.
+    /// </returns>
+    /// <exception cref="Exceptions.ServiceProvidersHaveBeenBuiltException">
+    /// Thrown if this method has already been called.
+    /// </exception>
     public IServiceProviderCollection BuildAll();
 
+    /// <summary>
+    /// Retrieves a builder associated with the specified key.
+    /// </summary>
+    /// <param name="key">The unique identifier of the builder to retrieve.</param>
+    /// <returns>
+    /// The <see cref="IServiceProviderBuilder"/> associated with the specified key.
+    /// If it does not exists then it gets created on the fly.
+    /// </returns>
+    /// <exception cref="Exceptions.InvalidServiceProviderKeyException">
+    /// Thrown if the <paramref name="key"/> is null.</exception>
+    /// <exception cref="Exceptions.ServiceProvidersHaveBeenBuiltException">
+    /// Thrown if <see cref="BuildAll"/> has already been called.
+    /// </exception>
     public IServiceProviderBuilder GetBuilder(object key);
 }

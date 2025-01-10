@@ -101,11 +101,37 @@ public class ServiceProviderBuilderShould
     }
 
     [Fact]
-    public void DefaultInstanceIsEmpty()
+    public void BeEmptyWhenDefault()
     {
         int expectedRegisteredTypeCount = 0;
-        var sut = ServiceProviderBuilder.DefaultInstance;
+        var sut = ServiceProviderBuilder.DefaultBuilder;
 
         sut.Build().GetRegisteredServiceTypes().Count().Should().Be(expectedRegisteredTypeCount);
+    }
+
+    [Fact]
+    public void ReturnSameDefaultEveryTime()
+    {
+        var firstCall = ServiceProviderBuilder.DefaultBuilder;
+        var secondCall = ServiceProviderBuilder.DefaultBuilder;
+
+        secondCall.Should().Be(firstCall);
+    }
+
+    [Fact]
+    public void BeEmptyWhenReset()
+    {
+        int excpectedServiceCount = 0;
+        var sut = new ServiceProviderBuilder()
+            .AddSingleton(() => new GetterService<Guid>(Guid.NewGuid()));
+
+        sut.Reset();
+        var provider = sut.Build();
+
+
+        provider.GetRegisteredServiceTypes()
+            .Count()
+            .Should()
+            .Be(excpectedServiceCount);
     }
 }

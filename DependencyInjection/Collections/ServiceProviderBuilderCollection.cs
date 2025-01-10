@@ -1,32 +1,40 @@
 using FolkerD0C.DependencyInjection.Exceptions;
-using FolkerD0C.DependencyInjection.Utilities;
 
 namespace FolkerD0C.DependencyInjection.Collections;
 
-public class ServiceProviderBuilderCollection
+public class ServiceProviderBuilderCollection : IServiceProviderBuilderCollection
 {
     #region Static
-    public static IServiceProviderBuilder DefaultBuilder => ServiceProviderBuilder.DefaultInstance;
-    public static readonly ServiceProviderBuilderCollection DefaultBuilderCollection = new(ServiceProviderCollection.DefaultProviderCollection);
+    /// <summary>
+    /// The default service provider builder collection.
+    /// </summary>
+    public static readonly IServiceProviderBuilderCollection DefaultBuilderCollection =
+        new ServiceProviderBuilderCollection(ServiceProviderCollection.DefaultProviderCollection);
+
+    /// <summary>
+    /// The default service provider builder (the same as <see cref="ServiceProviderBuilder.DefaultBuilder"/>).
+    /// </summary>
+    public static IServiceProviderBuilder DefaultBuilder => ServiceProviderBuilder.DefaultBuilder;
     #endregion
 
     private readonly Dictionary<object, IServiceProviderBuilder> _serviceProviderBuilders = [];
-    private readonly ServiceProviderCollection _providerCollection;
+    private IServiceProviderCollection? _providerCollection;
 
     private bool _serviceProvidersBuilt = false;
 
-    private ServiceProviderBuilderCollection(ServiceProviderCollection providerCollection)
+    private ServiceProviderBuilderCollection(IServiceProviderCollection providerCollection)
     {
         _providerCollection = providerCollection;
     }
 
-    public ServiceProviderBuilderCollection() : this(new())
+    public ServiceProviderBuilderCollection() : this(new ServiceProviderCollection())
     {
     }
 
-    public ServiceProviderCollection BuildAll()
+    /// <inheritdoc/>
+    public IServiceProviderCollection BuildAll()
     {
-        if (_serviceProvidersBuilt)
+        if (_serviceProvidersBuilt || _providerCollection is null)
         {
             throw new ServiceProvidersHaveBeenBuiltException();
         }
@@ -36,9 +44,12 @@ public class ServiceProviderBuilderCollection
             _providerCollection.AddServiceProvider(keyAndBuilder.Key, keyAndBuilder.Value.Build());
         }
         _serviceProvidersBuilt = true;
-        return _providerCollection;
+        IServiceProviderCollection result = _providerCollection;
+        Reset(false);
+        return result;
     }
 
+    /// <inheritdoc/>
     public IServiceProviderBuilder GetBuilder(object key)
     {
         if (_serviceProvidersBuilt)
@@ -46,7 +57,7 @@ public class ServiceProviderBuilderCollection
             throw new ServiceProvidersHaveBeenBuiltException();
         }
 
-        if (key is null || key.Equals(Constants.DefaultServiceProviderKey))
+        if (key is null)
         {
             throw new InvalidServiceProviderKeyException(key);
         }
@@ -59,5 +70,25 @@ public class ServiceProviderBuilderCollection
         builder = new ServiceProviderBuilder();
         _serviceProviderBuilders.Add(key, builder);
         return builder;
+    }
+
+    /// <inheritdoc/>
+    public void Reset()
+    {
+        Reset(true);
+    }
+
+    void Reset(bool externalReset)
+    {
+        if (_serviceProvidersBuilt)
+        {
+            _providerCollection = new ServiceProviderCollection();
+        }
+        _serviceProviderBuilders.Clear();
+        if (externalReset)
+        {
+            _serviceProvidersBuilt = false;
+            _providerCollection?.Reset();
+        }
     }
 }

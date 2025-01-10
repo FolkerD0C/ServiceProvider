@@ -6,7 +6,7 @@ using FolkerD0C.DependencyInjection.Tests.Services;
 
 namespace FolkerD0C.DependencyInjection.Tests;
 
-public class ServiceProviderShould
+public class ServiceProviderShould : TestBase
 {
     readonly IServiceProviderBuilder _builder;
 
@@ -168,10 +168,10 @@ public class ServiceProviderShould
     [Fact]
     public void ThrowIfDefaultIsRequestedButHasNotBeenBuiltYet()
     {
-        GlobalStateResetter();
+        ResetGlobalState();
         Action gettingDefaultInstance = () =>
         {
-            var instance = ServiceProvider.DefaultInstance;
+            var instance = ServiceProvider.DefaultProvider;
         };
 
         gettingDefaultInstance
@@ -179,14 +179,54 @@ public class ServiceProviderShould
             .Throw<NullReferenceException>();
     }
 
-    private void GlobalStateResetter()
+    [Fact]
+    public void NotThrowWhenBuildDefaultGetsCalledMultipleTimes()
     {
-        var allStaticNonpublicFields = typeof(ServiceProvider).GetFields(BindingFlags.Static | BindingFlags.NonPublic);
-        var defaultInstanceFieldInfo = allStaticNonpublicFields.FirstOrDefault(field => field.Name.Equals("s_defaultInstance"));
-        if (defaultInstanceFieldInfo is null)
-        {
-            return;
-        }
-        defaultInstanceFieldInfo.SetValue(null, null);
+        ServiceProvider.BuildDefaultProvider();
+        ServiceProvider.BuildDefaultProvider();
+    }
+
+    [Fact]
+    public void ReturnSameDefaultEveryTime()
+    {
+        ResetGlobalState();
+        ServiceProvider.BuildDefaultProvider();
+
+        var firstCall = ServiceProvider.DefaultProvider;
+        var secondCall = ServiceProvider.DefaultProvider;
+
+        secondCall.Should().Be(firstCall);
+    }
+
+    [Fact]
+    public void HaveTheSameServicesAsTheDefaultBuilderWhenDefault()
+    {
+        ResetGlobalState();
+        var expectedServiceResponse = Guid.NewGuid();
+        ServiceProviderBuilder.DefaultBuilder.AddSingleton(() =>
+            new GetterService<Guid>(expectedServiceResponse));
+        ServiceProvider.BuildDefaultProvider();
+
+        ServiceProvider.DefaultProvider
+            .Resolve<GetterService<Guid>>()
+            .GetValue()
+            .Should()
+            .Be(expectedServiceResponse);
+    }
+
+    [Fact]
+    public void BeEmptyWhenReset()
+    {
+        int excpectedServiceCount = 0;
+        var sut = _builder
+            .AddSingleton(() => new GetterService<Guid>(Guid.NewGuid()))
+            .Build();
+
+        sut.Reset();
+
+        sut.GetRegisteredServiceTypes()
+            .Count()
+            .Should()
+            .Be(excpectedServiceCount);
     }
 }

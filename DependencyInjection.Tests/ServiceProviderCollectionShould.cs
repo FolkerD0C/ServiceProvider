@@ -6,7 +6,7 @@ using FolkerD0C.DependencyInjection.Tests.Services;
 
 namespace FolkerD0C.DependencyInjection.Tests;
 
-public class ServiceProviderCollectionShould
+public class ServiceProviderCollectionShould : TestBase
 {
     [Fact]
     public void AllowMultipleOfTheSameContractTypeInDifferentProviders()
@@ -58,8 +58,9 @@ public class ServiceProviderCollectionShould
     public void ThrowWhenKeyIsNotRegistered()
     {
         var nonExistentKey = Guid.NewGuid();
+        var sut = new ServiceProviderBuilderCollection().BuildAll();
 
-        var notFoundAssertion = ServiceProviderCollection.DefaultProviderCollection
+        var notFoundAssertion = sut
             .Invoking(subject => subject.GetServiceProvider(nonExistentKey))
             .Should()
             .Throw<ServiceProviderNotFoundException>();
@@ -68,9 +69,116 @@ public class ServiceProviderCollectionShould
     }
 
     [Fact]
+    public void ThrowIfKeyIsInvalid()
+    {
+        string? invalidKey = null;
+        var sut = new ServiceProviderBuilderCollection().BuildAll();
+        var provider = new ServiceProviderBuilder().Build();
+
+        var invalidKeyAddingAssertion = sut
+#pragma warning disable CS8604
+            .Invoking(subject => subject.AddServiceProvider(invalidKey, provider))
+#pragma warning restore CS8604
+            .Should()
+            .Throw<InvalidServiceProviderKeyException>();
+        invalidKeyAddingAssertion.Subject.First().InvalidKey.Should().Be(invalidKey);
+
+        var invalidKeyGettingAssertion = sut
+#pragma warning disable CS8604
+            .Invoking(subject => subject.GetServiceProvider(invalidKey))
+#pragma warning restore CS8604
+            .Should()
+            .Throw<InvalidServiceProviderKeyException>();
+        invalidKeyGettingAssertion.Subject.First().InvalidKey.Should().Be(invalidKey);
+    }
+
+    [Fact]
+    public void ThrowIfProviderIsInvalidUponAdding()
+    {
+        var fixture = new Fixture();
+        var dummyKey = fixture.Create<object>();
+        var sut = new ServiceProviderBuilderCollection().BuildAll();
+        
+
+        var invalidKeyAddingAssertion = sut
+#pragma warning disable CS8625
+            .Invoking(subject => subject.AddServiceProvider(dummyKey, null))
+#pragma warning restore CS8625
+            .Should()
+            .Throw<InvalidServiceProviderException>();
+        invalidKeyAddingAssertion.Subject.First().ServiceProvider.Should().BeNull();
+    }
+
+    [Fact]
     public void ReturnSameDefaultAsProviderClass()
     {
         ServiceProvider.BuildDefaultProvider();
-        ServiceProviderCollection.DefaultProvider.Should().Be(ServiceProvider.DefaultInstance);
+        ServiceProviderCollection.DefaultProvider.Should().Be(ServiceProvider.DefaultProvider);
+    }
+
+    [Fact]
+    public void ReturnSameDefaultEveryTime()
+    {
+        var firstCall = ServiceProviderCollection.DefaultProviderCollection;
+        var secondCall = ServiceProviderCollection.DefaultProviderCollection;
+
+        secondCall.Should().Be(firstCall);
+    }
+
+    [Theory]
+    [InlineData("dummy", true)]
+    [InlineData(null, false)]
+    public void ReturnExpectedAndNotThrowWhenTryAddIsCalled(object? key, bool expected)
+    {
+        var sut = new ServiceProviderBuilderCollection().BuildAll();
+
+        #pragma warning disable CS8604
+        bool providerAdded = sut.TryAddServiceProvider(key, new ServiceProviderBuilder().Build());
+        #pragma warning restore CS8604
+
+        providerAdded.Should().Be(expected);
+    }
+
+    [Fact]
+    public void HaveTheSameProvidersAsBuilderCollectionWhenDefault()
+    {
+        Random rng = new();
+        int providerCount = rng.Next(10, 20);
+        var keys = Enumerable.Range(0, providerCount).Select(_ => Guid.NewGuid()).ToList();
+
+        ResetGlobalState();
+        foreach (var key in keys)
+        {
+            ServiceProviderBuilderCollection.DefaultBuilderCollection
+                .GetBuilder(key)
+                .AddSingleton(() => new GetterService<Guid>(key));
+        }
+        ServiceProviderBuilderCollection.DefaultBuilderCollection.BuildAll();
+        
+        foreach (var key in keys)
+        {
+            ServiceProviderCollection.DefaultProviderCollection
+                .GetServiceProvider(key)
+                .Resolve<GetterService<Guid>>()
+                .GetValue()
+                .Should()
+                .Be(key);
+        }
+    }
+
+    [Fact]
+    public void BeEmptyWhenReset()
+    {
+        int excpectedServiceCount = 0;
+        var builderCollection = new ServiceProviderBuilderCollection();
+        builderCollection.GetBuilder(Guid.NewGuid());
+        var sut = builderCollection.BuildAll();
+
+        sut.Reset();
+
+        sut.GetServiceProviders()
+            .Count()
+            .Should()
+            .Be(excpectedServiceCount);
     }
 }

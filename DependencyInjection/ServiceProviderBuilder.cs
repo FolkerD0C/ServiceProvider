@@ -3,14 +3,12 @@ using FolkerD0C.DependencyInjection.Utilities;
 
 namespace FolkerD0C.DependencyInjection;
 
-/// <summary>
-/// Provides an implementation for the <see cref="IServiceProviderBuilder"/> interface.
-/// </summary>
+/// <inheritdoc cref="IServiceProviderBuilder"/>
 public sealed class ServiceProviderBuilder : IServiceProviderBuilder
 {
-    public static readonly IServiceProviderBuilder DefaultInstance = new ServiceProviderBuilder();
+    public static readonly IServiceProviderBuilder DefaultBuilder = new ServiceProviderBuilder();
 
-    private readonly Dictionary<Type, RegisteredType> _registeredTypes = new();
+    private readonly Dictionary<Type, RegisteredType> _registeredTypes = [];
 
     #region Public methods
     /// <inheritdoc/>
@@ -59,6 +57,11 @@ public sealed class ServiceProviderBuilder : IServiceProviderBuilder
     public IServiceProvider Build()
     {
         return new ServiceProvider(_registeredTypes);
+    }
+
+    public void Reset()
+    {
+        _registeredTypes.Clear();
     }
     #endregion
 

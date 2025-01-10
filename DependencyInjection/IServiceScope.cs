@@ -2,8 +2,8 @@
 
 /// <summary>
 /// Defines a contract for objects that have an expiration scope.
-/// If a scope is expired then the object is renewed.
-/// If a scope is renewable then it gets renewed.
+/// If a scope is expired then the object is recreated.
+/// If a scope is renewable then it gets renewed after expiration.
 /// </summary>
 public interface IServiceScope
 {
