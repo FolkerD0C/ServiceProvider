@@ -1,15 +1,15 @@
 namespace FolkerD0C.DependencyInjection.Tests;
 
-public class TimedExpirationScope : IExpirationScope
+public class TimedScope : IServiceScope
 {
     private readonly TimeSpan _validTimespan;
     DateTime _expirationStart;
 
-    public TimedExpirationScope(int validMilliSeconds) : this(TimeSpan.FromMilliseconds(validMilliSeconds))
+    public TimedScope(int validMilliSeconds) : this(TimeSpan.FromMilliseconds(validMilliSeconds))
     {
     }
 
-    public TimedExpirationScope(TimeSpan timeSpan)
+    public TimedScope(TimeSpan timeSpan)
     {
         _validTimespan = timeSpan;
         _expirationStart = DateTime.Now;

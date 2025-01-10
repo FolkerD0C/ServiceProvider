@@ -12,7 +12,7 @@ public interface IServiceProviderBuilder
     /// <param name="scope">The expiration scope associated with the service.</param>
     /// <param name="instantiator">An optional factory method to create instances of the service.</param>
     /// <returns>The current <see cref="IServiceProviderBuilder"/> instance.</returns>
-    IServiceProviderBuilder AddScoped<TImplementation>(IExpirationScope scope, Func<TImplementation>? instantiator = null);
+    IServiceProviderBuilder AddScoped<TImplementation>(IServiceScope scope, Func<TImplementation>? instantiator = null);
 
     /// <summary>
     /// Registers a scoped service with a contract type and an implementation type, and associates it with an expiration scope.
@@ -22,7 +22,7 @@ public interface IServiceProviderBuilder
     /// <param name="scope">The expiration scope associated with the service.</param>
     /// <param name="instantiator">An optional factory method to create instances of the service.</param>
     /// <returns>The current <see cref="IServiceProviderBuilder"/> instance.</returns>
-    IServiceProviderBuilder AddScoped<TContract, TImplementation>(IExpirationScope scope, Func<TContract>? instantiator = null);
+    IServiceProviderBuilder AddScoped<TContract, TImplementation>(IServiceScope scope, Func<TContract>? instantiator = null);
 
     /// <summary>
     /// Registers a singleton service with the specified implementation type.

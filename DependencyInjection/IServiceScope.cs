@@ -5,7 +5,7 @@
 /// If a scope is expired then the object is renewed.
 /// If a scope is renewable then it gets renewed.
 /// </summary>
-public interface IExpirationScope
+public interface IServiceScope
 {
     /// <summary>
     /// Gets a value indicating whether the scope can be renewed.

@@ -11,14 +11,14 @@ public sealed class ServiceProviderBuilder : IServiceProviderBuilder
 
     #region Public methods
     /// <inheritdoc/>
-    public IServiceProviderBuilder AddScoped<TImplementation>(IExpirationScope scope, Func<TImplementation>? instantiator = null)
+    public IServiceProviderBuilder AddScoped<TImplementation>(IServiceScope scope, Func<TImplementation>? instantiator = null)
     {
         Add(typeof(TImplementation), scope, instantiator);
         return this;
     }
 
     /// <inheritdoc/>
-    public IServiceProviderBuilder AddScoped<TContract, TImplementation>(IExpirationScope scope, Func<TContract>? instantiator = null)
+    public IServiceProviderBuilder AddScoped<TContract, TImplementation>(IServiceScope scope, Func<TContract>? instantiator = null)
     {
         Add(typeof(TImplementation), scope, instantiator);
         return this;
@@ -27,28 +27,28 @@ public sealed class ServiceProviderBuilder : IServiceProviderBuilder
     /// <inheritdoc/>
     public IServiceProviderBuilder AddSingleton<TImplementation>(Func<TImplementation>? instantiator = null)
     {
-        Add(typeof(TImplementation), ExpirationScope.GetSingleton(), instantiator);
+        Add(typeof(TImplementation), ServiceScope.GetSingleton(), instantiator);
         return this;
     }
 
     /// <inheritdoc/>
     public IServiceProviderBuilder AddSingleton<TContract, TImplementation>(Func<TContract>? instantiator = null)
     {
-        Add(typeof(TImplementation), ExpirationScope.GetSingleton(), instantiator);
+        Add(typeof(TImplementation), ServiceScope.GetSingleton(), instantiator);
         return this;
     }
 
     /// <inheritdoc/>
     public IServiceProviderBuilder AddTransient<TImplementation>(Func<TImplementation>? instantiator = null)
     {
-        Add(typeof(TImplementation), ExpirationScope.GetTransient(), instantiator);
+        Add(typeof(TImplementation), ServiceScope.GetTransient(), instantiator);
         return this;
     }
 
     /// <inheritdoc/>
     public IServiceProviderBuilder AddTransient<TContract, TImplementation>(Func<TContract>? instantiator = null)
     {
-        Add(typeof(TImplementation), ExpirationScope.GetTransient(), instantiator);
+        Add(typeof(TImplementation), ServiceScope.GetTransient(), instantiator);
         return this;
     }
 
@@ -61,16 +61,16 @@ public sealed class ServiceProviderBuilder : IServiceProviderBuilder
 
     #region Private methods
 
-    private void Add<TContract>(Type implementationType, IExpirationScope scope, Func<TContract>? instantiator = null)
+    private void Add<TContract>(Type implementationType, IServiceScope scope, Func<TContract>? instantiator = null)
     {
         if (implementationType.IsInterface || implementationType.IsAbstract)
         {
-            throw new InvalidOperationException($"{implementationType} is not constructable.");
+            throw new ServiceTypeNotInstantiatableException(implementationType);
         }
 
         if (!implementationType.IsAssignableTo(typeof(TContract)))
         {
-            throw new InvalidOperationException($"{implementationType} is not assignable to {typeof(TContract)}");
+            throw new ServiceTypeNotAssignableException(typeof(TContract), implementationType);
         }
         
         if (typeof(TContract).IsGenericType && implementationType.IsGenericTypeDefinition)

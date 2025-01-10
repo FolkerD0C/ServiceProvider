@@ -18,8 +18,28 @@ public class ServiceProvider : IServiceProvider
 
     #region Public methods
     /// <inheritdoc/>
-    public IEnumerable<Type> GetRegisteredServices()
+    public IEnumerable<Type> GetRegisteredServiceTypes()
         => _registeredTypes.Select(kvp => kvp.Key);
+    
+    /// <inheritdoc/>
+    public bool GetService<TContract>(out TContract? serviceInstance)
+    {
+        serviceInstance = default;
+        bool resolutionResult = false;
+        try
+        {
+            serviceInstance = Resolve<TContract>();
+            resolutionResult = true;
+        }
+        catch (DependencyInjectionException)
+        {
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+        return resolutionResult;
+    }
 
     /// <inheritdoc/>
     public TContract Resolve<TContract>()
@@ -72,13 +92,9 @@ public class ServiceProvider : IServiceProvider
             || (typeof(TContract).IsGenericType
                 && _registeredTypes.TryGetValue(typeof(TContract).GetGenericTypeDefinition(), out registeredType)))
         {
-            if (registeredType is RegisteredType<TContract> parameterizedRegisteredType)
-            {
-                return parameterizedRegisteredType;
-            }
             return registeredType;
         }
-        throw new InvalidOperationException($"{typeof(TContract)} is not a registered type.");
+        throw new ServiceTypeNotRegisteredException(typeof(TContract));
     }
 
     private TContract HandleExpiredScope<TContract>(RegisteredType registeredType)

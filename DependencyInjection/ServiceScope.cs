@@ -1,22 +1,22 @@
 ﻿namespace FolkerD0C.DependencyInjection;
 
-internal static class ExpirationScope
+internal static class ServiceScope
 {
-    internal static IExpirationScope GetSingleton()
+    internal static IServiceScope GetSingleton()
     {
-        return new FixedExpirationScope(true);
+        return new FixedServiceScope(true);
     }
 
-    internal static IExpirationScope GetTransient()
+    internal static IServiceScope GetTransient()
     {
-        return new FixedExpirationScope(false);
+        return new FixedServiceScope(false);
     }
 
-    private class FixedExpirationScope : IExpirationScope
+    private class FixedServiceScope : IServiceScope
     {
         private readonly bool _isValid;
 
-        internal FixedExpirationScope(bool isValid)
+        internal FixedServiceScope(bool isValid)
         {
             _isValid = isValid;
         }

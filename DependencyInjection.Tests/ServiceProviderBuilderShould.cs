@@ -64,29 +64,39 @@ public class ServiceProviderBuilderShould
         actualStringService.Should().Be(expectedStringService);
         actualIntService.Should().Be(expectedIntService);
         actualGuidService.GetGuid().Should().Be(expectedTestService.GetGuid());
-        provider.GetRegisteredServices().Count().Should().Be(expectedRegisteredServiceCount);
+        provider.GetRegisteredServiceTypes().Count().Should().Be(expectedRegisteredServiceCount);
     }
 
     [Fact]
     public void ThrowWhenServiceIsUnconstructable()
     {
-        _sut.Invoking(sut => sut.AddSingleton<UnConstructableService>())
+        var abstractAssertion = _sut.Invoking(sut => sut.AddSingleton<UnConstructableService>())
             .Should()
-            .Throw<InvalidOperationException>()
-            .WithMessage("* is not constructable.");
-        _sut.Invoking(sut => sut.AddSingleton<IUnconstructableService>())
+            .Throw<ServiceTypeNotInstantiatableException>()
+            .WithMessage("* is not an instantiatable type.");
+
+        var exceptionFromAbstract = abstractAssertion.Subject.First();
+        exceptionFromAbstract.ServiceType.Should().Be(typeof(UnConstructableService));
+        
+        var interfaceAssertion = _sut.Invoking(sut => sut.AddSingleton<IUnconstructableService>())
             .Should()
-            .Throw<InvalidOperationException>()
-            .WithMessage("* is not constructable.");
+            .Throw<ServiceTypeNotInstantiatableException>()
+            .WithMessage("* is not an instantiatable type.");
+        var exceptionFromInterface = interfaceAssertion.Subject.First();
+        exceptionFromInterface.ServiceType.Should().Be(typeof(IUnconstructableService));
     }
 
     [Fact]
     public void ThrowWhenImplementationIsUnassignableToContract()
     {
-        _sut.Invoking(sut => sut.AddTransient<Guid, TestService>())
+        var unassignableAssertion = _sut.Invoking(sut => sut.AddTransient<Guid, TestService>())
             .Should()
-            .Throw<InvalidOperationException>()
+            .Throw<ServiceTypeNotAssignableException>()
             .WithMessage("* is not assignable to *");
+
+        var exceptionFromUnassignable = unassignableAssertion.Subject.First();
+        exceptionFromUnassignable.ServiceType.Should().Be(typeof(Guid));
+        exceptionFromUnassignable.AssigneeType.Should().Be(typeof(TestService));
     }
 
     [Fact]
@@ -95,6 +105,6 @@ public class ServiceProviderBuilderShould
         int expectedRegisteredTypeCount = 0;
         var sut = ServiceProviderBuilder.DefaultInstance;
 
-        sut.Build().GetRegisteredServices().Count().Should().Be(expectedRegisteredTypeCount);
+        sut.Build().GetRegisteredServiceTypes().Count().Should().Be(expectedRegisteredTypeCount);
     }
 }

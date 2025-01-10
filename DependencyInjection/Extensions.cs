@@ -8,6 +8,6 @@ internal static class Extensions
         {
             return contractValue;
         }
-        throw new InvalidOperationException($"Object [{value}] can not be cast to {typeof(TContract)}.");
+        throw new ServiceTypeNotCastableException(typeof(TContract), value?.GetType() ?? typeof(object));
     }
 }

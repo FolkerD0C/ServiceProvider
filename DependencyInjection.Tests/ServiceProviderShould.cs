@@ -27,7 +27,7 @@ public class ServiceProviderShould
     [Fact]
     public void RenewServiceWhenExpired()
     {
-        var sut = _builder.AddScoped<IGuidGetterService, TestService>(new TimedExpirationScope(100)).Build();
+        var sut = _builder.AddScoped<IGuidGetterService, TestService>(new TimedScope(100)).Build();
 
         var firstScopedGuid = sut.Resolve<IGuidGetterService>().GetGuid();
         var secondScopedGuid = sut.Resolve<IGuidGetterService>().GetGuid();
@@ -79,7 +79,7 @@ public class ServiceProviderShould
         var sut = _builder
             .AddTransient(() => expectedInt)
             .AddTransient(() => expectedString)
-            .AddScoped<GetterService<int>>(new TimedExpirationScope(30000))
+            .AddScoped<GetterService<int>>(new TimedScope(30000))
             .AddSingleton<GetterService<string>>()
             .AddTransient<IOtherGenericService<int, string>, GenericService<int, string>>()
             .Build();
@@ -106,12 +106,60 @@ public class ServiceProviderShould
     }
 
     [Fact]
-    public void ThrowIfUnregisteredResolutionIsNeeded()
+    public void ThrowWhenResolvingUnregistered()
     {
         var sut = _builder.Build();
-        sut.Invoking(subject => subject.Resolve<int>())
+        var unregisteredAssertion = sut.Invoking(subject => subject.Resolve<int>())
             .Should()
-            .Throw<InvalidOperationException>()
+            .Throw<ServiceTypeNotRegisteredException>()
             .WithMessage("* is not a registered type.");
+        var exceptionFromUnregistered = unregisteredAssertion.Subject.First();
+        exceptionFromUnregistered.ServiceType.Should().Be(typeof(int));
+    }
+
+    [Fact]
+    public void GetServiceAndReturnTrue()
+    {
+        var expectedGuid = Guid.NewGuid();
+
+        var sut = _builder
+            .AddSingleton(() => new GetterService<Guid>(expectedGuid))
+            .Build();
+
+        var serviceIsResolved = sut.GetService(out GetterService<Guid>? actualService);
+
+        serviceIsResolved.Should().BeTrue();
+        actualService.Should().NotBeNull();
+        actualService?.GetValue().Should().Be(expectedGuid);
+    }
+
+    [Fact]
+    public void NotThrowExceptionIfItIsFromDI()
+    {
+        var sut = _builder.Build();
+
+        var serviceIsResolved = sut.GetService(out Guid? service);
+
+        serviceIsResolved.Should().BeFalse();
+        service.Should().BeNull();
+    }
+
+    [Fact]
+    public void ThrowExceptionIfItIsNotFromDI()
+    {
+        var fixture = new Fixture();
+        var expectedMessage = fixture.Create<string>();
+
+        var sut = _builder
+            .AddSingleton<string>(() => 
+            {
+                throw new ApplicationException(expectedMessage);
+            })
+            .Build();
+        
+        var getServiceAssertion = sut.Invoking(subject => subject.GetService(out string? _))
+            .Should()
+            .Throw<ApplicationException>()
+            .WithMessage(expectedMessage);
     }
 }
