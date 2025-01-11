@@ -1,8 +1,7 @@
-using System.Reflection;
 using AutoFixture;
 using FluentAssertions;
 using FolkerD0C.DependencyInjection.Exceptions;
-using FolkerD0C.DependencyInjection.Tests.Services;
+using FolkerD0C.DependencyInjection.Tests.Shared.Services;
 
 namespace FolkerD0C.DependencyInjection.Tests;
 

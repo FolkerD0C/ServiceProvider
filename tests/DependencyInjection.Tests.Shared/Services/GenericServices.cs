@@ -1,4 +1,4 @@
-namespace FolkerD0C.DependencyInjection.Tests.Services;
+namespace FolkerD0C.DependencyInjection.Tests.Shared.Services;
 
 public class GenericService<T, U> : IOtherGenericService<T, U>
 {
