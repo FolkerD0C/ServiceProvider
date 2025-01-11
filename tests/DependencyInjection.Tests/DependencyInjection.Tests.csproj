@@ -28,7 +28,6 @@
   <ItemGroup>
     <ProjectReference Include="../../DependencyInjection/DependencyInjection.csproj" />
     <ProjectReference Include="../DependencyInjection.Tests.Shared/DependencyInjection.Tests.Shared.csproj" />
-    <ProjectReference Include="../DependencyInjection/DependencyInjection.csproj" />
   </ItemGroup>
 
 </Project>
