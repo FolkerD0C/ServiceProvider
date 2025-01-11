@@ -1,4 +1,4 @@
-namespace FolkerD0C.DependencyInjection.Tests;
+namespace FolkerD0C.DependencyInjection.Tests.Helpers;
 
 public class TimedScope : IServiceScope
 {
