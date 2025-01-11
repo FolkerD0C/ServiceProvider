@@ -19,8 +19,8 @@ public class ServiceProviderBuilderCollectionConfigurationShould : TestBase
         
         foreach (var key in keys)
         {
-            builderCollection = ServiceProviderBuilderCollection.Configure(
-                builderCollection, new GetterCollectionConfiguration<Guid>(key));
+            builderCollection = builderCollection.Configure(
+                new GetterCollectionConfiguration<Guid>(key));
         }
         var providerCollection = builderCollection.BuildAll();
 
@@ -64,11 +64,8 @@ public class ServiceProviderBuilderCollectionConfigurationShould : TestBase
     [Fact]
     public void BeConfiguredFromAssembly()
     {
-        var builderCollection = new ServiceProviderBuilderCollection();
-
-        var providerCollection = ServiceProviderBuilderCollection
-            .ConfigureFromAssembly(builderCollection,
-                typeof(ConfigurationAssembly.One.AssemblyReference).Assembly)
+        var providerCollection = new ServiceProviderBuilderCollection()
+            .ConfigureFromAssembly(typeof(ConfigurationAssembly.One.AssemblyReference).Assembly)
             .BuildAll();
         
         providerCollection.GetServiceProvider(ServiceProviderKeys.ServiceProviderKeyOne)
@@ -110,9 +107,8 @@ public class ServiceProviderBuilderCollectionConfigurationShould : TestBase
     [Fact]
     public void BeConfiguredFromAssemblies()
     {
-        var builderCollection = new ServiceProviderBuilderCollection();
-        var providerCollection = ServiceProviderBuilderCollection
-            .ConfigureFromAssemblies(builderCollection,
+        var providerCollection = new ServiceProviderBuilderCollection()
+            .ConfigureFromAssemblies(
                 typeof(ConfigurationAssemblies.One.AssemblyReference).Assembly,
                 typeof(ConfigurationAssemblies.Two.AssemblyReference).Assembly)
             .BuildAll();

@@ -6,7 +6,7 @@ namespace FolkerD0C.DependencyInjection.Tests.ConfigurationAssemblies.One;
 
 public class GuidPartialConfiguration : IServiceProviderBuilderConfiguration
 {
-    public IServiceProviderBuilder Configure(IServiceProviderBuilder builder)
+    public IServiceProviderBuilder ConfigureBuilder(IServiceProviderBuilder builder)
     {
         return builder.AddSingleton(() =>
             new GetterService<Guid>(ServiceResponses.GuidResponse));

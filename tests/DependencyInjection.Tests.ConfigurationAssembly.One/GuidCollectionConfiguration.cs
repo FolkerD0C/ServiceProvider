@@ -7,7 +7,7 @@ namespace FolkerD0C.DependencyInjection.Tests.ConfigurationAssembly.One;
 
 public class GuidCollectionConfiguration : IServiceProviderBuilderCollectionConfiguration
 {
-    public IServiceProviderBuilderCollection ConfigureCollection(IServiceProviderBuilderCollection builderCollection)
+    public IServiceProviderBuilderCollection ConfigureBuilderCollection(IServiceProviderBuilderCollection builderCollection)
     {
         builderCollection.GetBuilder(ServiceProviderKeys.ServiceProviderKeyOne)
             .AddSingleton(() => new GetterService<Guid>(ServiceProviderKeys.ServiceProviderKeyOne));

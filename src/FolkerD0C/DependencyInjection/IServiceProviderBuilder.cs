@@ -1,3 +1,6 @@
+using System.Reflection;
+using FolkerD0C.DependencyInjection.Configuration;
+
 namespace FolkerD0C.DependencyInjection;
 
 /// <summary>
@@ -89,4 +92,27 @@ public interface IServiceProviderBuilder : IResettable
     /// </summary>
     /// <returns>An <see cref="IServiceProvider"/> instance with the configured services.</returns>
     IServiceProvider Build();
+
+    /// <summary>
+    /// Configures the builder using the specified <paramref name="builderConfiguration"/>.
+    /// </summary>
+    /// <param name="builderConfiguration">The configuration to apply.</param>
+    /// <returns>The configured <see cref="IServiceProviderBuilder"/>.</returns>
+    IServiceProviderBuilder Configure(IServiceProviderBuilderConfiguration builderConfiguration);
+
+    /// <summary>
+    /// Configures the builder using all implementations of 
+    /// <see cref="IServiceProviderBuilderConfiguration"/> found in the given <paramref name="assembly"/>.
+    /// </summary>
+    /// <param name="assembly">The assembly to scan for configuration implementations.</param>
+    /// <returns>The configured <see cref="IServiceProviderBuilder"/>.</returns>
+    IServiceProviderBuilder ConfigureFromAssembly(Assembly assembly);
+
+    /// <summary>
+    /// Configures the builder using all implementations of 
+    /// <see cref="IServiceProviderBuilderConfiguration"/> found in the specified <paramref name="assemblies"/>.
+    /// </summary>
+    /// <param name="assemblies">An array of assemblies to scan for configuration implementations.</param>
+    /// <returns>The configured <see cref="IServiceProviderBuilder"/>.</returns>
+    IServiceProviderBuilder ConfigureFromAssemblies(params Assembly[] assemblies);
 }

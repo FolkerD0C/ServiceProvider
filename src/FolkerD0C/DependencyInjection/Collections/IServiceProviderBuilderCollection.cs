@@ -1,3 +1,6 @@
+using System.Reflection;
+using FolkerD0C.DependencyInjection.Configuration;
+
 namespace FolkerD0C.DependencyInjection.Collections;
 
 /// <summary>
@@ -16,7 +19,31 @@ public interface IServiceProviderBuilderCollection : IResettable
     /// <exception cref="Exceptions.ServiceProvidersHaveBeenBuiltException">
     /// Thrown if this method has already been called.
     /// </exception>
-    public IServiceProviderCollection BuildAll();
+    IServiceProviderCollection BuildAll();
+
+    /// <summary>
+    /// Configures the builder collection using the provided 
+    /// <paramref name="configuration"/>.
+    /// </summary>
+    /// <param name="configuration">The configuration to apply to the builder collection.</param>
+    /// <returns>The configured <see cref="IServiceProviderBuilderCollection"/>.</returns>
+    IServiceProviderBuilderCollection Configure(IServiceProviderBuilderCollectionConfiguration configuration);
+
+    /// <summary>
+    /// Configures the builder collection using all implementations of 
+    /// <see cref="IServiceProviderBuilderCollectionConfiguration"/> found in the specified <paramref name="assembly"/>.
+    /// </summary>
+    /// <param name="assembly">The assembly to scan for configuration implementations.</param>
+    /// <returns>The configured <see cref="IServiceProviderBuilderCollection"/>.</returns>
+    IServiceProviderBuilderCollection ConfigureFromAssembly(Assembly assembly);
+
+    /// <summary>
+    /// Configures the builder collection using all implementations of 
+    /// <see cref="IServiceProviderBuilderCollectionConfiguration"/> found in the specified <paramref name="assemblies"/>.
+    /// </summary>
+    /// <param name="assemblies">An array of assemblies to scan for configuration implementations.</param>
+    /// <returns>The configured <see cref="IServiceProviderBuilderCollection"/>.</returns>
+    IServiceProviderBuilderCollection ConfigureFromAssemblies(params Assembly[] assemblies);
 
     /// <summary>
     /// Retrieves a builder associated with the specified key.
@@ -31,5 +58,5 @@ public interface IServiceProviderBuilderCollection : IResettable
     /// <exception cref="Exceptions.ServiceProvidersHaveBeenBuiltException">
     /// Thrown if <see cref="BuildAll"/> has already been called.
     /// </exception>
-    public IServiceProviderBuilder GetBuilder(object key);
+    IServiceProviderBuilder GetBuilder(object key);
 }

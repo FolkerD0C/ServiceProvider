@@ -11,10 +11,9 @@ public class ServiceProviderBuilderConfigurationShould : TestBase
     public void BeConfiguredBySimpleConfiguration()
     {
         var key = Guid.NewGuid();
-        var builder = new ServiceProviderBuilder();
         var configuration = new GetterConfiguration<Guid>(key);
 
-        var provider = ServiceProviderBuilder.Configure(builder, configuration).Build();
+        var provider = new ServiceProviderBuilder().Configure(configuration).Build();
 
         provider.Resolve<GetterService<Guid>>()
             .GetValue()
@@ -42,9 +41,7 @@ public class ServiceProviderBuilderConfigurationShould : TestBase
     [Fact]
     public void BeConfiguredFromAssembly()
     {
-        var builder = new ServiceProviderBuilder();
-
-        var provider = ServiceProviderBuilder.ConfigureFromAssembly(builder,
+        var provider = new ServiceProviderBuilder().ConfigureFromAssembly(
             typeof(ConfigurationAssembly.One.AssemblyReference).Assembly).Build();
         
         provider.Resolve<GetterService<Guid>>()
@@ -82,8 +79,7 @@ public class ServiceProviderBuilderConfigurationShould : TestBase
     [Fact]
     public void BeConfiguredFromAssemblies()
     {
-        var builder = new ServiceProviderBuilder();
-        var provider = ServiceProviderBuilder.ConfigureFromAssemblies(builder,
+        var provider = new ServiceProviderBuilder().ConfigureFromAssemblies(
             typeof(ConfigurationAssemblies.One.AssemblyReference).Assembly,
             typeof(ConfigurationAssemblies.Two.AssemblyReference).Assembly).Build();
         

@@ -7,7 +7,7 @@ public class GetterConfiguration<TValue>(TValue gettableValue) : IServiceProvide
 {
     private readonly TValue _gettableValue = gettableValue;
 
-    public IServiceProviderBuilder Configure(IServiceProviderBuilder builder)
+    public IServiceProviderBuilder ConfigureBuilder(IServiceProviderBuilder builder)
     {
         return builder.AddSingleton(() => new GetterService<TValue>(_gettableValue));
     }

@@ -6,7 +6,7 @@ namespace FolkerD0C.DependencyInjection.Tests.ConfigurationAssemblies.Two;
 
 public class StringPartialConfiguration : IServiceProviderBuilderConfiguration
 {
-    public IServiceProviderBuilder Configure(IServiceProviderBuilder builder)
+    public IServiceProviderBuilder ConfigureBuilder(IServiceProviderBuilder builder)
     {
         return builder.AddSingleton(() =>
             new GetterService<string>(ServiceResponses.StringResponse));

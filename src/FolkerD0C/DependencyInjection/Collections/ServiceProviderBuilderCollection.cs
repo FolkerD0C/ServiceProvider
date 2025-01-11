@@ -1,3 +1,5 @@
+using System.Reflection;
+using FolkerD0C.DependencyInjection.Configuration;
 using FolkerD0C.DependencyInjection.Exceptions;
 
 namespace FolkerD0C.DependencyInjection.Collections;
@@ -27,6 +29,9 @@ public sealed partial class ServiceProviderBuilderCollection : IServiceProviderB
         _providerCollection = providerCollection;
     }
 
+    /// <summary>
+    /// Creates a new instance of the <see cref="ServiceProviderBuilderCollection"/> class.
+    /// </summary>
     public ServiceProviderBuilderCollection() : this(new ServiceProviderCollection())
     {
     }
@@ -47,6 +52,42 @@ public sealed partial class ServiceProviderBuilderCollection : IServiceProviderB
         IServiceProviderCollection result = _providerCollection;
         Reset(false);
         return result;
+    }
+
+    /// <inheritdoc/>
+    public IServiceProviderBuilderCollection Configure(IServiceProviderBuilderCollectionConfiguration configuration)
+    {
+        return configuration.ConfigureBuilderCollection(this);
+    }
+
+    /// <inheritdoc/>
+    public IServiceProviderBuilderCollection ConfigureFromAssembly(Assembly assembly)
+    {
+        var configurationTypes = assembly.GetTypes()
+            .Where(type => type.GetInterfaces()
+                .Any(iface => iface.Name.EndsWith(nameof(IServiceProviderBuilderCollectionConfiguration))));
+        
+        foreach (var configurationType in configurationTypes)
+        {
+            var configurationInstance = Activator.CreateInstance(configurationType);
+            if (configurationInstance is IServiceProviderBuilderCollectionConfiguration configuration)
+            {
+                Configure(configuration);
+            }
+        }
+
+        return this;
+    }
+
+    /// <inheritdoc/>
+    public IServiceProviderBuilderCollection ConfigureFromAssemblies(params Assembly[] assemblies)
+    {
+        foreach (var assembly in assemblies)
+        {
+            ConfigureFromAssembly(assembly);
+        }
+
+        return this;
     }
 
     /// <inheritdoc/>
