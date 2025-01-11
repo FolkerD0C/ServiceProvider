@@ -26,7 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../../DependencyInjection/DependencyInjection.csproj" />
+    <ProjectReference Include="../../src/FolkerD0C/DependencyInjection/DependencyInjection.csproj" />
     <ProjectReference Include="../DependencyInjection.Tests.Shared/DependencyInjection.Tests.Shared.csproj" />
   </ItemGroup>
 
