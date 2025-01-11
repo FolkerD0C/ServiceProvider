@@ -5,7 +5,7 @@ using FolkerD0C.DependencyInjection.Tests.Shared.Services;
 
 namespace FolkerD0C.DependencyInjection.Tests;
 
-public class ServiceProviderBuilderShould
+public class ServiceProviderBuilderShould : TestBase
 {
     readonly IServiceProviderBuilder _sut;
     readonly Fixture _fixture;
@@ -103,6 +103,7 @@ public class ServiceProviderBuilderShould
     [Fact]
     public void BeEmptyWhenDefault()
     {
+        ResetGlobalState();
         int expectedRegisteredTypeCount = 0;
         var sut = ServiceProviderBuilder.DefaultBuilder;
 

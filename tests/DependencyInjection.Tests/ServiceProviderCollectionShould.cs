@@ -142,11 +142,11 @@ public class ServiceProviderCollectionShould : TestBase
     [Fact]
     public void HaveTheSameProvidersAsBuilderCollectionWhenDefault()
     {
+        ResetGlobalState();
         Random rng = new();
         int providerCount = rng.Next(10, 20);
         var keys = Enumerable.Range(0, providerCount).Select(_ => Guid.NewGuid()).ToList();
 
-        ResetGlobalState();
         foreach (var key in keys)
         {
             ServiceProviderBuilderCollection.DefaultBuilderCollection

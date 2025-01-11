@@ -27,6 +27,10 @@
 
   <ItemGroup>
     <ProjectReference Include="../../src/FolkerD0C/DependencyInjection/DependencyInjection.csproj" />
+    <ProjectReference Include="../DependencyInjection.Tests.ConfigurationAssemblies.One/DependencyInjection.Tests.ConfigurationAssemblies.One.csproj" />
+    <ProjectReference Include="../DependencyInjection.Tests.ConfigurationAssemblies.Two/DependencyInjection.Tests.ConfigurationAssemblies.Two.csproj" />
+    <ProjectReference Include="../DependencyInjection.Tests.ConfigurationAssembly.One/DependencyInjection.Tests.ConfigurationAssembly.One.csproj" />
+    <ProjectReference Include="../DependencyInjection.Tests.Configurations.One/DependencyInjection.Tests.Configurations.One.csproj" />
     <ProjectReference Include="../DependencyInjection.Tests.Shared/DependencyInjection.Tests.Shared.csproj" />
   </ItemGroup>
 
