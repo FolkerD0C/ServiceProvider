@@ -4,7 +4,7 @@ using FolkerD0C.DependencyInjection.Utilities;
 namespace FolkerD0C.DependencyInjection;
 
 /// <inheritdoc cref="IServiceProviderBuilder"/>
-public sealed class ServiceProviderBuilder : IServiceProviderBuilder
+public sealed partial class ServiceProviderBuilder : IServiceProviderBuilder
 {
     public static readonly IServiceProviderBuilder DefaultBuilder = new ServiceProviderBuilder();
 

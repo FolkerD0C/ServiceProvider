@@ -2,7 +2,7 @@ using FolkerD0C.DependencyInjection.Exceptions;
 
 namespace FolkerD0C.DependencyInjection.Collections;
 
-public class ServiceProviderBuilderCollection : IServiceProviderBuilderCollection
+public sealed partial class ServiceProviderBuilderCollection : IServiceProviderBuilderCollection
 {
     #region Static
     /// <summary>

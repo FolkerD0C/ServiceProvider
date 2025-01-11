@@ -6,7 +6,7 @@ namespace FolkerD0C.DependencyInjection.Collections;
 /// <inheritdoc cref="IServiceProviderCollection"/><br/>
 /// Can only be created through <see cref="IServiceProviderBuilderCollection.BuildAll"/>.
 /// </summary>
-public class ServiceProviderCollection : IServiceProviderCollection
+public sealed class ServiceProviderCollection : IServiceProviderCollection
 {
     #region Static
     /// <summary>
