@@ -8,8 +8,10 @@
     <Version>1.0.0</Version>
     <Authors>FolkerD0C</Authors>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageReleaseNotes>See https://github.com/FolkerD0C/ServiceProvider/blob/v$(Version)/CHANGELOG.md for the release notes.</PackageReleaseNotes>
+    <PackageIcon>FolkerD0C.DependencyInjection.png</PackageIcon>
     <Description>A simple dependency injection container solution</Description>
-    <ProjectUrl>https://github.com/FolkerD0C/ServiceProvider</ProjectUrl>
+    <PackageProjectUrl>https://github.com/FolkerD0C/ServiceProvider</PackageProjectUrl>
     <RepositoryUrl>https://github.com/FolkerD0C/ServiceProvider</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageLicenseExpression> GPL-3.0-or-later</PackageLicenseExpression>
@@ -22,6 +24,9 @@
 
   <ItemGroup>
     <None Include="../../../README.md" Pack="true" PackagePath="\">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets/FolkerD0C.DependencyInjection.png" Pack="true" PackagePath="\">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

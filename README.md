@@ -1,5 +1,9 @@
 # ServiceProvider
 
+FolkerD0C.DependencyInjection - A simple dependency injection container solution
+
+---
+
 ## Table of contents
 - [Overview](#overview)
 - [Features](#features)
@@ -8,6 +12,8 @@
 - [Built with](#built-with)
 - [Contributions](#contributions)
 - [License](#license)
+
+---
 
 ## Overview
 The `FolkerD0C.DependencyInjection` library is a lightweight dependency injection framework designed to offer a robust API for building and managing service providers and their lifecycles. This framework enables developers to register, configure, and resolve services with support for scoped, singleton, and transient lifetimes, as well as advanced configuration options via assemblies.
