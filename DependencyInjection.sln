@@ -21,6 +21,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DependencyInjection.Tests.C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DependencyInjection.Tests.ConfigurationAssemblies.Two", "tests\DependencyInjection.Tests.ConfigurationAssemblies.Two\DependencyInjection.Tests.ConfigurationAssemblies.Two.csproj", "{41A96BDE-87CF-4E1E-A181-713447264F7F}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{F9DC44C9-E64B-44B5-8018-5C3C5C538FBD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FolkerD0C.DependencyInjection.Documentation", "docs\FolkerD0C.DependencyInjection.Documentation\FolkerD0C.DependencyInjection.Documentation.csproj", "{99D2C637-8109-475C-A4F0-16C549EDDF82}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +59,10 @@ Global
 		{41A96BDE-87CF-4E1E-A181-713447264F7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{41A96BDE-87CF-4E1E-A181-713447264F7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{41A96BDE-87CF-4E1E-A181-713447264F7F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99D2C637-8109-475C-A4F0-16C549EDDF82}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99D2C637-8109-475C-A4F0-16C549EDDF82}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99D2C637-8109-475C-A4F0-16C549EDDF82}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99D2C637-8109-475C-A4F0-16C549EDDF82}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -67,6 +75,7 @@ Global
 		{2F0F1839-F711-40DB-BD0F-3686D0148D4C} = {D071480D-9AF5-4803-B903-80CF9C26DAB3}
 		{92C777FB-0DB9-4A8B-99C7-620E6C672B04} = {D071480D-9AF5-4803-B903-80CF9C26DAB3}
 		{41A96BDE-87CF-4E1E-A181-713447264F7F} = {D071480D-9AF5-4803-B903-80CF9C26DAB3}
+		{99D2C637-8109-475C-A4F0-16C549EDDF82} = {F9DC44C9-E64B-44B5-8018-5C3C5C538FBD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E097EE89-E8C5-456E-870C-4028CA4628D8}
