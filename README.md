@@ -82,6 +82,9 @@ Please visit the [official documentation](docs/FolkerD0C.DependencyInjection.md)
 ## Built with
 - [.NET](https://dotnet.microsoft.com/en-us/)
 - [XmlDocMarkdown](https://github.com/ejball/XmlDocMarkdown)
+- [xunit](https://xunit.net/)
+- [FluentAssertions](https://fluentassertions.com/)
+- [AutoFixture](https://github.com/AutoFixture/AutoFixture)
 
 ## Contributions
 Contributions are welcome! Please submit issues or pull requests via the [GitHub repository](https://github.com/FolkerD0C/ServiceProvider).
