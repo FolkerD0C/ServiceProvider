@@ -7,6 +7,7 @@ FolkerD0C.DependencyInjection - A simple dependency injection container solution
 ## Table of contents
 - [Overview](#overview)
 - [Features](#features)
+- [Installation](#installation)
 - [Usage](#usage)
 - [Documentation](#documentation)
 - [Built with](#built-with)
@@ -24,6 +25,9 @@ The `FolkerD0C.DependencyInjection` library is a lightweight dependency injectio
 - **Builder Configurations:** Configure service providers dynamically using assemblies or custom logic.
 - **Service Collection:** Manage multiple service providers in collections for advanced dependency injection scenarios.
 - **Resettable Interfaces:** Easily reset providers and builders to initial states.
+
+## Installation
+You can install this package from [NuGet](https://www.nuget.org/packages/FolkerD0C.DependencyInjection).
 
 ## Usage
 
