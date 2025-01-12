@@ -1,6 +1,7 @@
 # Changelog
 
-## 1.0.0 (2025-01-12)
+<a name="1.0.0"></a>
+## [1.0.0](https://www.github.com/FolkerD0C/ServiceProvider/releases/tag/v1.0.0) (2025-01-12)
 
 Initial release
 
@@ -36,3 +37,11 @@ The FolkerD0C.DependencyInjection package is a lightweight and extensible depend
         - Configure builders from assemblies.
         - Access individual builders by key.
         - `BuildAll()` to construct all providers in the collection.
+
+<a name="1.0.1"></a>
+## [1.0.1](https://www.github.com/FolkerD0C/ServiceProvider/releases/tag/v1.0.1) (2025-01-12)
+
+### Bug Fixes
+
+* Move method to where it logically belongs ([b36bd2b](https://www.github.com/FolkerD0C/ServiceProvider/commit/b36bd2b216add880c74f0332e1ff324111ecdb42))
+

@@ -1,14 +1,14 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <PackageId>FolkerD0C.DependencyInjection</PackageId>
-    <Version>1.0.0</Version>
+    <Version>1.0.1</Version>
     <Authors>FolkerD0C</Authors>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageReleaseNotes>See https://github.com/FolkerD0C/ServiceProvider/blob/v$(Version)/CHANGELOG.md for the release notes.</PackageReleaseNotes>
+    <PackageReleaseNotes>See https://github.com/FolkerD0C/ServiceProvider/blob/v$(Version)/CHANGELOG.md#$(Version) for the release notes.</PackageReleaseNotes>
     <PackageIcon>FolkerD0C.DependencyInjection.png</PackageIcon>
     <Description>A simple dependency injection container solution</Description>
     <PackageProjectUrl>https://github.com/FolkerD0C/ServiceProvider</PackageProjectUrl>
