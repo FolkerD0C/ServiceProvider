@@ -77,7 +77,7 @@ var provider1 = collection.GetServiceProvider("provider1");
 ```
 
 ## Documentation
-Please visit the [official documentation](docs/FolkerD0C.DependencyInjection.md) for this project.
+Please visit the [official documentation](https://github.com/FolkerD0C/ServiceProvider/blob/master/docs/FolkerD0C.DependencyInjection.md) for this project.
 
 ## Built with
 - [.NET](https://dotnet.microsoft.com/en-us/)
