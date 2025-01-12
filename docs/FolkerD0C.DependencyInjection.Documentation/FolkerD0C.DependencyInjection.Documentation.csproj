@@ -5,10 +5,11 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <RuntimeIdentifier>linux-x64</RuntimeIdentifier> <!--  This line is the temp fix  -->
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../../src/FolkerD0C/DependencyInjection/DependencyInjection.csproj" />
+    <ProjectReference Include="../../src/FolkerD0C/FolkerD0C.DependencyInjection/FolkerD0C.DependencyInjection.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="XmlDocMarkdown.Core" Version="2.9.0" />
