@@ -1,5 +1,14 @@
 # ServiceProvider
 
+## Table of contents
+- [Overview](#overview)
+- [Features](#features)
+- [Usage](#usage)
+- [Documentation](#documentation)
+- [Built with](#built-with)
+- [Contributions](#contributions)
+- [License](#license)
+
 ## Overview
 The `FolkerD0C.DependencyInjection` library is a lightweight dependency injection framework designed to offer a robust API for building and managing service providers and their lifecycles. This framework enables developers to register, configure, and resolve services with support for scoped, singleton, and transient lifetimes, as well as advanced configuration options via assemblies.
 
@@ -67,13 +76,17 @@ collection.AddServiceProvider("provider2", new ServiceProviderBuilder().Build())
 var provider1 = collection.GetServiceProvider("provider1");
 ```
 
-## API reference
-[Public API](api_reference.md)
+## Documentation
+Please visit the [official documentation](docs/FolkerD0C.DependencyInjection.md) for this project.
+
+## Built with
+- [.NET](https://dotnet.microsoft.com/en-us/)
+- [XmlDocMarkdown](https://github.com/ejball/XmlDocMarkdown)
 
 ## Contributions
 Contributions are welcome! Please submit issues or pull requests via the [GitHub repository](https://github.com/FolkerD0C/ServiceProvider).
 
 ## License
 This project is licensed under the MIT License. See the `LICENSE` file for details.
-[(Back to top)](#serviceprovider)
+[(Back to top)](#table-of-contents)
 
