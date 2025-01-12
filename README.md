@@ -67,10 +67,13 @@ collection.AddServiceProvider("provider2", new ServiceProviderBuilder().Build())
 var provider1 = collection.GetServiceProvider("provider1");
 ```
 
+## API reference
+[Public API](api_reference.md)
+
 ## Contributions
 Contributions are welcome! Please submit issues or pull requests via the [GitHub repository](https://github.com/FolkerD0C/ServiceProvider).
 
 ## License
 This project is licensed under the MIT License. See the `LICENSE` file for details.
-[(Back to top)](#table-of-contents)
+[(Back to top)](#serviceprovider)
 
