@@ -182,15 +182,15 @@ public class ServiceProviderShould : TestBase
     [Fact]
     public void NotThrowWhenBuildDefaultGetsCalledMultipleTimes()
     {
-        ServiceProvider.BuildDefaultProvider();
-        ServiceProvider.BuildDefaultProvider();
+        ServiceProviderBuilder.BuildDefault();
+        ServiceProviderBuilder.BuildDefault();
     }
 
     [Fact]
     public void ReturnSameDefaultEveryTime()
     {
         ResetGlobalState();
-        ServiceProvider.BuildDefaultProvider();
+        ServiceProviderBuilder.BuildDefault();
 
         var firstCall = ServiceProvider.DefaultProvider;
         var secondCall = ServiceProvider.DefaultProvider;
@@ -205,7 +205,7 @@ public class ServiceProviderShould : TestBase
         var expectedServiceResponse = Guid.NewGuid();
         ServiceProviderBuilder.DefaultBuilder.AddSingleton(() =>
             new GetterService<Guid>(expectedServiceResponse));
-        ServiceProvider.BuildDefaultProvider();
+        ServiceProviderBuilder.BuildDefault();
 
         ServiceProvider.DefaultProvider
             .Resolve<GetterService<Guid>>()

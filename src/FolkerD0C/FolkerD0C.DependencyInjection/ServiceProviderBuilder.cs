@@ -16,6 +16,15 @@ public sealed partial class ServiceProviderBuilder : IServiceProviderBuilder
     private readonly Dictionary<Type, RegisteredType> _registeredTypes = [];
 
     #region Public methods
+    /// <summary>
+    /// Used only for building the default provider. If it is already built
+    /// then this method has no effect.
+    /// </summary>
+    public static void BuildDefault()
+    {
+        ServiceProvider.SetDefaultProvider(DefaultBuilder.Build());
+    }
+
     /// <inheritdoc/>
     public IServiceProviderBuilder AddScoped<TImplementation>(IServiceScope scope, Func<TImplementation>? instantiator = null)
     {

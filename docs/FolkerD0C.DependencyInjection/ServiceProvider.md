@@ -12,8 +12,7 @@ public sealed class ServiceProvider : IServiceProvider
 | [GetService&lt;TContract&gt;](ServiceProvider/GetService.md)(…) |  |
 | [Reset](ServiceProvider/Reset.md)() |  |
 | [Resolve&lt;TContract&gt;](ServiceProvider/Resolve.md)() |  |
-| static [DefaultProvider](ServiceProvider/DefaultProvider.md) { get; } | Gets the default instance. Throws a NullReferenceException if it has not been built yet. Use the [`BuildDefaultProvider`](./ServiceProvider/BuildDefaultProvider.md) method to build the deafult instance. |
-| static [BuildDefaultProvider](ServiceProvider/BuildDefaultProvider.md)() | Used only for building the default instance. If it is already build then this method has no effect. |
+| static [DefaultProvider](ServiceProvider/DefaultProvider.md) { get; } | Gets the default instance. Throws a NullReferenceException if it has not been built yet. Use the [`BuildDefault`](./ServiceProviderBuilder/BuildDefault.md) method to build the deafult instance. |
 
 ## See Also
 

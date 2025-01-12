@@ -112,7 +112,7 @@ public class ServiceProviderCollectionShould : TestBase
     [Fact]
     public void ReturnSameDefaultAsProviderClass()
     {
-        ServiceProvider.BuildDefaultProvider();
+        ServiceProviderBuilder.BuildDefault();
         ServiceProviderCollection.DefaultProvider.Should().Be(ServiceProvider.DefaultProvider);
     }
 

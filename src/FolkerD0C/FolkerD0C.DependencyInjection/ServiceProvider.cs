@@ -14,7 +14,7 @@ public sealed class ServiceProvider : IServiceProvider
 
     /// <summary>
     /// Gets the default instance. Throws a <see cref="NullReferenceException"/> if
-    /// it has not been built yet. Use the <see cref="BuildDefaultProvider"/>
+    /// it has not been built yet. Use the <see cref="ServiceProviderBuilder.BuildDefault"/>
     /// method to build the deafult instance.
     /// </summary>
     public static IServiceProvider DefaultProvider
@@ -35,15 +35,6 @@ public sealed class ServiceProvider : IServiceProvider
     }
 
     #region Public methods
-    /// <summary>
-    /// Used only for building the default instance. If it is already build
-    /// then this method has no effect.
-    /// </summary>
-    public static void BuildDefaultProvider()
-    {
-        s_defaultProvider ??= ServiceProviderBuilder.DefaultBuilder.Build();
-    }
-
     /// <inheritdoc/>
     public IEnumerable<Type> GetRegisteredServiceTypes()
         => _registeredTypes.Select(kvp => kvp.Key);
@@ -83,6 +74,11 @@ public sealed class ServiceProvider : IServiceProvider
         _cachedObjects.Clear();
     }
     #endregion
+
+    internal static void SetDefaultProvider(IServiceProvider serviceProvider)
+    {
+        s_defaultProvider ??= serviceProvider;
+    }
 
     #region Private methods
     private TContract Create<TContract>(RegisteredType registeredType)

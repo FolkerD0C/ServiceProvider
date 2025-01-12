@@ -21,6 +21,7 @@ public sealed class ServiceProviderBuilder : IServiceProviderBuilder
 | [ConfigureFromAssembly](ServiceProviderBuilder/ConfigureFromAssembly.md)(…) |  |
 | [Reset](ServiceProviderBuilder/Reset.md)() |  |
 | static readonly [DefaultBuilder](ServiceProviderBuilder/DefaultBuilder.md) | The default service provider builder. |
+| static [BuildDefault](ServiceProviderBuilder/BuildDefault.md)() | Used only for building the default provider. If it is already built then this method has no effect. |
 | static [ConfigureDefault](ServiceProviderBuilder/ConfigureDefault.md)(…) | Configures the default [`IServiceProviderBuilder`](./IServiceProviderBuilder.md) using the specified *configuration*. |
 | static [ConfigureDefaultFromAssemblies](ServiceProviderBuilder/ConfigureDefaultFromAssemblies.md)(…) | Configures the default [`IServiceProviderBuilder`](./IServiceProviderBuilder.md) using all implementations of [`IServiceProviderBuilderConfiguration`](../FolkerD0C.DependencyInjection.Configuration/IServiceProviderBuilderConfiguration.md) found in the specified *assemblies*. |
 | static [ConfigureDefaultFromAssembly](ServiceProviderBuilder/ConfigureDefaultFromAssembly.md)(…) | Configures the default [`IServiceProviderBuilder`](./IServiceProviderBuilder.md) using all implementations of [`IServiceProviderBuilderConfiguration`](../FolkerD0C.DependencyInjection.Configuration/IServiceProviderBuilderConfiguration.md) found in the specified *assembly*. |

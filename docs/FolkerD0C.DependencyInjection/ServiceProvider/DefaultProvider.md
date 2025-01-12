@@ -1,6 +1,6 @@
 # ServiceProvider.DefaultProvider property
 
-Gets the default instance. Throws a NullReferenceException if it has not been built yet. Use the [`BuildDefaultProvider`](./BuildDefaultProvider.md) method to build the deafult instance.
+Gets the default instance. Throws a NullReferenceException if it has not been built yet. Use the [`BuildDefault`](../ServiceProviderBuilder/BuildDefault.md) method to build the deafult instance.
 
 ```csharp
 public static IServiceProvider DefaultProvider { get; }

@@ -30,7 +30,7 @@ public class ServiceProviderBuilderConfigurationShould : TestBase
 
         ServiceProviderBuilder.ConfigureDefault(configuration);
 
-        ServiceProvider.BuildDefaultProvider();
+        ServiceProviderBuilder.BuildDefault();
 
         ServiceProvider.DefaultProvider.Resolve<GetterService<Guid>>()
             .GetValue()
@@ -63,7 +63,7 @@ public class ServiceProviderBuilderConfigurationShould : TestBase
         ServiceProviderBuilder.ConfigureDefaultFromAssembly(
             typeof(ConfigurationAssembly.One.AssemblyReference).Assembly).Build();
         
-        ServiceProvider.BuildDefaultProvider();
+        ServiceProviderBuilder.BuildDefault();
         
         ServiceProvider.DefaultProvider.Resolve<GetterService<Guid>>()
             .GetValue()
@@ -102,7 +102,7 @@ public class ServiceProviderBuilderConfigurationShould : TestBase
             typeof(ConfigurationAssemblies.One.AssemblyReference).Assembly,
             typeof(ConfigurationAssemblies.Two.AssemblyReference).Assembly);
         
-        ServiceProvider.BuildDefaultProvider();
+        ServiceProviderBuilder.BuildDefault();
 
         ServiceProvider.DefaultProvider
             .Resolve<GetterService<Guid>>()
