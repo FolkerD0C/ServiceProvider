@@ -87,7 +87,7 @@ Please visit the [official documentation](docs/FolkerD0C.DependencyInjection.md)
 Contributions are welcome! Please submit issues or pull requests via the [GitHub repository](https://github.com/FolkerD0C/ServiceProvider).
 
 ## License
-This project is licensed under the GNU General Public License v3.0. See the `LICENSE` file for details.
+This project is licensed under the GNU General Public License v3.0. See the `[LICENSE](LICENSE)` file for details.
 
 [(Back to top)](#table-of-contents)
 
