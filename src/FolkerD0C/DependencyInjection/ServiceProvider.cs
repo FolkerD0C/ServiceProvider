@@ -75,6 +75,13 @@ public sealed class ServiceProvider : IServiceProvider
 
         return InternalResolve<TContract>(registeredType);
     }
+
+    /// <inheritdoc/>
+    public void Reset()
+    {
+        _registeredTypes.Clear();
+        _cachedObjects.Clear();
+    }
     #endregion
 
     #region Private methods
@@ -159,12 +166,6 @@ public sealed class ServiceProvider : IServiceProvider
         return registeredType.Scope.IsValidCurrently
             ? HandleValidScope<TContract>(registeredType)
             : HandleExpiredScope<TContract>(registeredType);
-    }
-
-    public void Reset()
-    {
-        _registeredTypes.Clear();
-        _cachedObjects.Clear();
     }
     #endregion
 }

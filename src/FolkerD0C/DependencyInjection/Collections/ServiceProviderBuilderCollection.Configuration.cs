@@ -29,6 +29,7 @@ public sealed partial class ServiceProviderBuilderCollection
         return DefaultBuilderCollection.ConfigureFromAssembly(assembly);
     }
 
+    /// <summary>
     /// Configures the default <see cref="IServiceProviderBuilderCollection"/> using all implementations of 
     /// <see cref="IServiceProviderBuilderCollectionConfiguration"/> found in the specified <paramref name="assemblies"/>.
     /// </summary>

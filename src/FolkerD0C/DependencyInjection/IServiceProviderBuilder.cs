@@ -16,7 +16,7 @@ public interface IServiceProviderBuilder : IResettable
     /// <param name="instantiator">An optional factory method to create instances of the service.</param>
     /// <returns>The current <see cref="IServiceProviderBuilder"/> instance.</returns>
     /// <exception cref="Exceptions.ServiceTypeNotInstantiatableException">
-    /// Thrown if <see cref="{TImplementation}"/> is not instantiatable
+    /// Thrown if TImplementation is not instantiatable
     /// (eg. it is an interface or an abstract class).</exception>
     IServiceProviderBuilder AddScoped<TImplementation>(IServiceScope scope, Func<TImplementation>? instantiator = null);
 
@@ -29,9 +29,9 @@ public interface IServiceProviderBuilder : IResettable
     /// <param name="instantiator">An optional factory method to create instances of the service.</param>
     /// <returns>The current <see cref="IServiceProviderBuilder"/> instance.</returns>
     /// <exception cref="Exceptions.ServiceTypeNotAssignableException">
-    /// Thrown if <see cref="{TImplementation}"/> is not assignable to <see cref="{TContract}"/>.</exception>
+    /// Thrown if TImplementation is not assignable to TContract.</exception>
     /// <exception cref="Exceptions.ServiceTypeNotInstantiatableException">
-    /// Thrown if <see cref="{TImplementation}"/> is not instantiatable
+    /// Thrown if TImplementation is not instantiatable
     /// (eg. it is an interface or an abstract class).</exception>
     IServiceProviderBuilder AddScoped<TContract, TImplementation>(IServiceScope scope, Func<TContract>? instantiator = null);
 
@@ -42,7 +42,7 @@ public interface IServiceProviderBuilder : IResettable
     /// <param name="instantiator">An optional factory method to create a single instance of the service.</param>
     /// <returns>The current <see cref="IServiceProviderBuilder"/> instance.</returns>
     /// <exception cref="Exceptions.ServiceTypeNotInstantiatableException">
-    /// Thrown if <see cref="{TImplementation}"/> is not instantiatable
+    /// Thrown if TImplementation is not instantiatable
     /// (eg. it is an interface or an abstract class).</exception>
     IServiceProviderBuilder AddSingleton<TImplementation>(Func<TImplementation>? instantiator = null);
 
@@ -54,9 +54,9 @@ public interface IServiceProviderBuilder : IResettable
     /// <param name="instantiator">An optional factory method to create a single instance of the service.</param>
     /// <returns>The current <see cref="IServiceProviderBuilder"/> instance.</returns>
     /// <exception cref="Exceptions.ServiceTypeNotAssignableException">
-    /// Thrown if <see cref="{TImplementation}"/> is not assignable to <see cref="{TContract}"/>.</exception>
+    /// Thrown if TImplementation is not assignable to TContract.</exception>
     /// <exception cref="Exceptions.ServiceTypeNotInstantiatableException">
-    /// Thrown if <see cref="{TImplementation}"/> is not instantiatable
+    /// Thrown if TImplementation is not instantiatable
     /// (eg. it is an interface or an abstract class).</exception>
     IServiceProviderBuilder AddSingleton<TContract, TImplementation>(Func<TContract>? instantiator = null);
 
@@ -68,7 +68,7 @@ public interface IServiceProviderBuilder : IResettable
     /// new instances of the service each time it is resolved.</param>
     /// <returns>The current <see cref="IServiceProviderBuilder"/> instance.</returns>
     /// <exception cref="Exceptions.ServiceTypeNotInstantiatableException">
-    /// Thrown if <see cref="{TImplementation}"/> is not instantiatable
+    /// Thrown if TImplementation is not instantiatable
     /// (eg. it is an interface or an abstract class).</exception>
     IServiceProviderBuilder AddTransient<TImplementation>(Func<TImplementation>? instantiator = null);
 
@@ -81,9 +81,9 @@ public interface IServiceProviderBuilder : IResettable
     /// new instances of the service each time it is resolved.</param>
     /// <returns>The current <see cref="IServiceProviderBuilder"/> instance.</returns>
     /// <exception cref="Exceptions.ServiceTypeNotAssignableException">
-    /// Thrown if <see cref="{TImplementation}"/> is not assignable to <see cref="{TContract}"/>.</exception>
+    /// Thrown if TImplementation is not assignable to TContract.</exception>
     /// <exception cref="Exceptions.ServiceTypeNotInstantiatableException">
-    /// Thrown if <see cref="{TImplementation}"/> is not instantiatable
+    /// Thrown if TImplementation is not instantiatable
     /// (eg. it is an interface or an abstract class).</exception>
     IServiceProviderBuilder AddTransient<TContract, TImplementation>(Func<TContract>? instantiator = null);
 

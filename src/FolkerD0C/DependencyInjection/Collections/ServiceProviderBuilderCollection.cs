@@ -4,6 +4,7 @@ using FolkerD0C.DependencyInjection.Exceptions;
 
 namespace FolkerD0C.DependencyInjection.Collections;
 
+/// <inheritdoc cref="IServiceProviderBuilderCollection"/>
 public sealed partial class ServiceProviderBuilderCollection : IServiceProviderBuilderCollection
 {
     #region Static
