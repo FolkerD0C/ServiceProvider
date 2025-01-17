@@ -14,7 +14,7 @@
     <PackageProjectUrl>https://github.com/FolkerD0C/ServiceProvider</PackageProjectUrl>
     <RepositoryUrl>https://github.com/FolkerD0C/ServiceProvider</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageLicenseExpression> GPL-3.0-or-later</PackageLicenseExpression>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Copyright>Copyright (c) FolkerD0C 2025.</Copyright>
     <Configurations>Debug;Release;DebugTest;ReleaseTest</Configurations>
   </PropertyGroup>
