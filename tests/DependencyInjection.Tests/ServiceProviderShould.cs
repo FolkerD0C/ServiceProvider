@@ -6,6 +6,7 @@ using FolkerD0C.DependencyInjection.Tests.Shared.Services;
 
 namespace FolkerD0C.DependencyInjection.Tests;
 
+[Collection("All tests")]
 public class ServiceProviderShould : TestBase
 {
     readonly IServiceProviderBuilder _builder;
@@ -165,6 +166,7 @@ public class ServiceProviderShould : TestBase
             .WithMessage(expectedMessage);
     }
 
+#if CAN_RESET_GLOBAL_STATE
     [Fact]
     public void ThrowIfDefaultIsRequestedButHasNotBeenBuiltYet()
     {
@@ -182,6 +184,7 @@ public class ServiceProviderShould : TestBase
     [Fact]
     public void NotThrowWhenBuildDefaultGetsCalledMultipleTimes()
     {
+        ResetGlobalState();
         ServiceProviderBuilder.BuildDefault();
         ServiceProviderBuilder.BuildDefault();
     }
@@ -213,20 +216,5 @@ public class ServiceProviderShould : TestBase
             .Should()
             .Be(expectedServiceResponse);
     }
-
-    [Fact]
-    public void BeEmptyWhenReset()
-    {
-        int excpectedServiceCount = 0;
-        var sut = _builder
-            .AddSingleton(() => new GetterService<Guid>(Guid.NewGuid()))
-            .Build();
-
-        sut.Reset();
-
-        sut.GetRegisteredServiceTypes()
-            .Count()
-            .Should()
-            .Be(excpectedServiceCount);
-    }
+#endif
 }

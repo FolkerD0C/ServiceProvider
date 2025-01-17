@@ -3,7 +3,7 @@ namespace FolkerD0C.DependencyInjection;
 /// <summary>
 /// Provides services that are registered in an <see cref="IServiceProviderBuilder"/>.
 /// </summary>
-public interface IServiceProvider : IResettable
+public interface IServiceProvider
 {
     /// <summary>
     /// Retrieves all currently registered services.

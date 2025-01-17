@@ -5,6 +5,7 @@ using FolkerD0C.DependencyInjection.Tests.Shared.Services;
 
 namespace FolkerD0C.DependencyInjection.Tests;
 
+[Collection("All tests")]
 public class ServiceProviderBuilderConfigurationShould : TestBase
 {
     [Fact]
@@ -16,23 +17,6 @@ public class ServiceProviderBuilderConfigurationShould : TestBase
         var provider = new ServiceProviderBuilder().Configure(configuration).Build();
 
         provider.Resolve<GetterService<Guid>>()
-            .GetValue()
-            .Should()
-            .Be(key);
-    }
-
-    [Fact]
-    public void BeConfiguredBySimpleConfigurationWithDefaultBuilder()
-    {
-        ResetGlobalState();
-        var key = Guid.NewGuid();
-        var configuration = new GetterConfiguration<Guid>(key);
-
-        ServiceProviderBuilder.ConfigureDefault(configuration);
-
-        ServiceProviderBuilder.BuildDefault();
-
-        ServiceProvider.DefaultProvider.Resolve<GetterService<Guid>>()
             .GetValue()
             .Should()
             .Be(key);
@@ -56,27 +40,6 @@ public class ServiceProviderBuilderConfigurationShould : TestBase
     }
 
     [Fact]
-    public void BeConfiguredFromAssemblyWithDefaultBuilder()
-    {
-        ResetGlobalState();
-
-        ServiceProviderBuilder.ConfigureDefaultFromAssembly(
-            typeof(ConfigurationAssembly.One.AssemblyReference).Assembly).Build();
-        
-        ServiceProviderBuilder.BuildDefault();
-        
-        ServiceProvider.DefaultProvider.Resolve<GetterService<Guid>>()
-            .GetValue()
-            .Should()
-            .Be(ServiceResponses.GuidResponse);
-        
-        ServiceProvider.DefaultProvider.Resolve<GetterService<string>>()
-            .GetValue()
-            .Should()
-            .Be(ServiceResponses.StringResponse);
-    }
-
-    [Fact]
     public void BeConfiguredFromAssemblies()
     {
         var provider = new ServiceProviderBuilder().ConfigureFromAssemblies(
@@ -89,6 +52,44 @@ public class ServiceProviderBuilderConfigurationShould : TestBase
             .Be(ServiceResponses.GuidResponse);
         
         provider.Resolve<GetterService<string>>()
+            .GetValue()
+            .Should()
+            .Be(ServiceResponses.StringResponse);
+    }
+
+#if CAN_RESET_GLOBAL_STATE
+    [Fact]
+    public void BeConfiguredBySimpleConfigurationWithDefaultBuilder()
+    {
+        ResetGlobalState();
+        var key = Guid.NewGuid();
+        var configuration = new GetterConfiguration<Guid>(key);
+
+        ServiceProviderBuilder.ConfigureDefault(configuration);
+
+        ServiceProviderBuilder.BuildDefault();
+
+        ServiceProvider.DefaultProvider.Resolve<GetterService<Guid>>()
+            .GetValue()
+            .Should()
+            .Be(key);
+    }
+
+    [Fact]
+    public void BeConfiguredFromAssemblyWithDefaultBuilder()
+    {
+        ResetGlobalState();
+        ServiceProviderBuilder.ConfigureDefaultFromAssembly(
+            typeof(ConfigurationAssembly.One.AssemblyReference).Assembly).Build();
+        
+        ServiceProviderBuilder.BuildDefault();
+        
+        ServiceProvider.DefaultProvider.Resolve<GetterService<Guid>>()
+            .GetValue()
+            .Should()
+            .Be(ServiceResponses.GuidResponse);
+        
+        ServiceProvider.DefaultProvider.Resolve<GetterService<string>>()
             .GetValue()
             .Should()
             .Be(ServiceResponses.StringResponse);
@@ -116,4 +117,5 @@ public class ServiceProviderBuilderConfigurationShould : TestBase
             .Should()
             .Be(ServiceResponses.StringResponse);
     }
+#endif
 }

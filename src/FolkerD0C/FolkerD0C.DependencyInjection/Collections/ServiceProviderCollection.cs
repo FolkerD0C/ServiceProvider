@@ -12,7 +12,11 @@ public sealed class ServiceProviderCollection : IServiceProviderCollection
     /// <summary>
     /// The default service provider collection.
     /// </summary>
-    public static readonly IServiceProviderCollection DefaultProviderCollection = new ServiceProviderCollection();
+    public static
+#if !CAN_RESET_GLOBAL_STATE
+    readonly
+#endif
+    IServiceProviderCollection DefaultProviderCollection = new ServiceProviderCollection();
 
     /// <summary>
     /// The default service provider (the same as <see cref="ServiceProvider.DefaultProvider"/>).
@@ -82,9 +86,13 @@ public sealed class ServiceProviderCollection : IServiceProviderCollection
         return serviceAdded;
     }
 
-    /// <inheritdoc/>
-    public void Reset()
+#if CAN_RESET_GLOBAL_STATE
+    /// <summary>
+    /// A method used in tests to reset static defaults
+    /// </summary>
+    public static void ResetGlobalState()
     {
-        _serviceProviders.Clear();
+        DefaultProviderCollection = new ServiceProviderCollection();
     }
+#endif
 }

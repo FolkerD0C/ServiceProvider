@@ -11,7 +11,11 @@ public sealed partial class ServiceProviderBuilder : IServiceProviderBuilder
     /// <summary>
     /// The default service provider builder.
     /// </summary>
-    public static readonly IServiceProviderBuilder DefaultBuilder = new ServiceProviderBuilder();
+    public static
+#if !CAN_RESET_GLOBAL_STATE
+    readonly
+#endif
+    IServiceProviderBuilder DefaultBuilder = new ServiceProviderBuilder();
 
     private readonly Dictionary<Type, RegisteredType> _registeredTypes = [];
 
@@ -109,11 +113,15 @@ public sealed partial class ServiceProviderBuilder : IServiceProviderBuilder
         return this;
     }
 
-    /// <inheritdoc/>
-    public void Reset()
+#if CAN_RESET_GLOBAL_STATE
+    /// <summary>
+    /// A method used in tests to reset static defaults
+    /// </summary>
+    public static void ResetGlobalState()
     {
-        _registeredTypes.Clear();
+        DefaultBuilder = new ServiceProviderBuilder();
     }
+#endif
     #endregion
 
     #region Private methods

@@ -11,7 +11,11 @@ public sealed partial class ServiceProviderBuilderCollection : IServiceProviderB
     /// <summary>
     /// The default service provider builder collection.
     /// </summary>
-    public static readonly IServiceProviderBuilderCollection DefaultBuilderCollection =
+    public static
+#if !CAN_RESET_GLOBAL_STATE
+    readonly
+#endif
+    IServiceProviderBuilderCollection DefaultBuilderCollection =
         new ServiceProviderBuilderCollection(ServiceProviderCollection.DefaultProviderCollection);
 
     /// <summary>
@@ -51,7 +55,6 @@ public sealed partial class ServiceProviderBuilderCollection : IServiceProviderB
         }
         _serviceProvidersBuilt = true;
         IServiceProviderCollection result = _providerCollection;
-        Reset(false);
         return result;
     }
 
@@ -114,23 +117,13 @@ public sealed partial class ServiceProviderBuilderCollection : IServiceProviderB
         return builder;
     }
 
-    /// <inheritdoc/>
-    public void Reset()
+#if CAN_RESET_GLOBAL_STATE
+    /// <summary>
+    /// A method used in tests to reset static defaults
+    /// </summary>
+    public static void ResetGlobalState()
     {
-        Reset(true);
+        DefaultBuilderCollection = new ServiceProviderBuilderCollection(ServiceProviderCollection.DefaultProviderCollection);
     }
-
-    void Reset(bool externalReset)
-    {
-        if (_serviceProvidersBuilt)
-        {
-            _providerCollection = new ServiceProviderCollection();
-        }
-        _serviceProviderBuilders.Clear();
-        if (externalReset)
-        {
-            _serviceProvidersBuilt = false;
-            _providerCollection?.Reset();
-        }
-    }
+#endif
 }

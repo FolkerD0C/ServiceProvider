@@ -67,12 +67,15 @@ public sealed class ServiceProvider : IServiceProvider
         return InternalResolve<TContract>(registeredType);
     }
 
-    /// <inheritdoc/>
-    public void Reset()
+#if CAN_RESET_GLOBAL_STATE
+    /// <summary>
+    /// A method used in tests to reset static defaults
+    /// </summary>
+    public static void ResetGlobalState()
     {
-        _registeredTypes.Clear();
-        _cachedObjects.Clear();
+        s_defaultProvider = null;
     }
+#endif
     #endregion
 
     internal static void SetDefaultProvider(IServiceProvider serviceProvider)

@@ -5,6 +5,7 @@ using FolkerD0C.DependencyInjection.Tests.Shared.Services;
 
 namespace FolkerD0C.DependencyInjection.Tests;
 
+[Collection("All tests")]
 public class ServiceProviderBuilderShould : TestBase
 {
     readonly IServiceProviderBuilder _sut;
@@ -100,6 +101,7 @@ public class ServiceProviderBuilderShould : TestBase
         exceptionFromUnassignable.AssigneeType.Should().Be(typeof(TestService));
     }
 
+#if CAN_RESET_GLOBAL_STATE
     [Fact]
     public void BeEmptyWhenDefault()
     {
@@ -118,21 +120,5 @@ public class ServiceProviderBuilderShould : TestBase
 
         secondCall.Should().Be(firstCall);
     }
-
-    [Fact]
-    public void BeEmptyWhenReset()
-    {
-        int excpectedServiceCount = 0;
-        var sut = new ServiceProviderBuilder()
-            .AddSingleton(() => new GetterService<Guid>(Guid.NewGuid()));
-
-        sut.Reset();
-        var provider = sut.Build();
-
-
-        provider.GetRegisteredServiceTypes()
-            .Count()
-            .Should()
-            .Be(excpectedServiceCount);
-    }
+#endif
 }

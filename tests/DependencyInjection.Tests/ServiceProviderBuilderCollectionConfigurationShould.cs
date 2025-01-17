@@ -6,6 +6,7 @@ using FolkerD0C.DependencyInjection.Tests.Shared.Services;
 
 namespace FolkerD0C.DependencyInjection.Tests;
 
+[Collection("All tests")]
 public class ServiceProviderBuilderCollectionConfigurationShould : TestBase
 {
     [Fact]
@@ -32,6 +33,72 @@ public class ServiceProviderBuilderCollectionConfigurationShould : TestBase
                 .Should()
                 .Be(key);
         }
+    }
+
+    [Fact]
+    public void BeConfiguredFromAssembly()
+    {
+        var providerCollection = new ServiceProviderBuilderCollection()
+            .ConfigureFromAssembly(typeof(ConfigurationAssembly.One.AssemblyReference).Assembly)
+            .BuildAll();
+        
+        providerCollection.GetServiceProvider(ServiceProviderKeys.ServiceProviderKeyOne)
+            .Resolve<GetterService<Guid>>()
+            .GetValue()
+            .Should()
+            .Be(ServiceProviderKeys.ServiceProviderKeyOne);
+        
+        providerCollection.GetServiceProvider(ServiceProviderKeys.ServiceProviderKeyTwo)
+            .Resolve<GetterService<Guid>>()
+            .GetValue()
+            .Should()
+            .Be(ServiceProviderKeys.ServiceProviderKeyTwo);
+    }
+
+    [Fact]
+    public void BeConfiguredFromAssemblies()
+    {
+        var providerCollection = new ServiceProviderBuilderCollection()
+            .ConfigureFromAssemblies(
+                typeof(ConfigurationAssemblies.One.AssemblyReference).Assembly,
+                typeof(ConfigurationAssemblies.Two.AssemblyReference).Assembly)
+            .BuildAll();
+        
+        providerCollection.GetServiceProvider(ServiceProviderKeys.ServiceProviderKeyOne)
+            .Resolve<GetterService<Guid>>()
+            .GetValue()
+            .Should()
+            .Be(ServiceProviderKeys.ServiceProviderKeyOne);
+        
+        providerCollection.GetServiceProvider(ServiceProviderKeys.ServiceProviderKeyTwo)
+            .Resolve<GetterService<Guid>>()
+            .GetValue()
+            .Should()
+            .Be(ServiceProviderKeys.ServiceProviderKeyTwo);
+    }
+
+#if CAN_RESET_GLOBAL_STATE
+    [Fact]
+    public void BeConfiguredFromAssemblyWithDefaultBuilderCollection()
+    {
+        ResetGlobalState();
+        ServiceProviderBuilderCollection.ConfigureDefaultFromAssembly(
+                typeof(ConfigurationAssembly.One.AssemblyReference).Assembly);
+        ServiceProviderBuilderCollection.DefaultBuilderCollection.BuildAll();
+        
+        ServiceProviderCollection.DefaultProviderCollection
+            .GetServiceProvider(ServiceProviderKeys.ServiceProviderKeyOne)
+            .Resolve<GetterService<Guid>>()
+            .GetValue()
+            .Should()
+            .Be(ServiceProviderKeys.ServiceProviderKeyOne);
+        
+        ServiceProviderCollection.DefaultProviderCollection
+            .GetServiceProvider(ServiceProviderKeys.ServiceProviderKeyTwo)
+            .Resolve<GetterService<Guid>>()
+            .GetValue()
+            .Should()
+            .Be(ServiceProviderKeys.ServiceProviderKeyTwo);
     }
 
     [Fact]
@@ -62,71 +129,6 @@ public class ServiceProviderBuilderCollectionConfigurationShould : TestBase
     }
 
     [Fact]
-    public void BeConfiguredFromAssembly()
-    {
-        var providerCollection = new ServiceProviderBuilderCollection()
-            .ConfigureFromAssembly(typeof(ConfigurationAssembly.One.AssemblyReference).Assembly)
-            .BuildAll();
-        
-        providerCollection.GetServiceProvider(ServiceProviderKeys.ServiceProviderKeyOne)
-            .Resolve<GetterService<Guid>>()
-            .GetValue()
-            .Should()
-            .Be(ServiceProviderKeys.ServiceProviderKeyOne);
-        
-        providerCollection.GetServiceProvider(ServiceProviderKeys.ServiceProviderKeyTwo)
-            .Resolve<GetterService<Guid>>()
-            .GetValue()
-            .Should()
-            .Be(ServiceProviderKeys.ServiceProviderKeyTwo);
-    }
-
-    [Fact]
-    public void BeConfiguredFromAssemblyWithDefaultBuilderCollection()
-    {
-        ResetGlobalState();
-        ServiceProviderBuilderCollection.ConfigureDefaultFromAssembly(
-                typeof(ConfigurationAssembly.One.AssemblyReference).Assembly);
-        ServiceProviderBuilderCollection.DefaultBuilderCollection.BuildAll();
-        
-        ServiceProviderCollection.DefaultProviderCollection
-            .GetServiceProvider(ServiceProviderKeys.ServiceProviderKeyOne)
-            .Resolve<GetterService<Guid>>()
-            .GetValue()
-            .Should()
-            .Be(ServiceProviderKeys.ServiceProviderKeyOne);
-        
-        ServiceProviderCollection.DefaultProviderCollection
-            .GetServiceProvider(ServiceProviderKeys.ServiceProviderKeyTwo)
-            .Resolve<GetterService<Guid>>()
-            .GetValue()
-            .Should()
-            .Be(ServiceProviderKeys.ServiceProviderKeyTwo);
-    }
-
-    [Fact]
-    public void BeConfiguredFromAssemblies()
-    {
-        var providerCollection = new ServiceProviderBuilderCollection()
-            .ConfigureFromAssemblies(
-                typeof(ConfigurationAssemblies.One.AssemblyReference).Assembly,
-                typeof(ConfigurationAssemblies.Two.AssemblyReference).Assembly)
-            .BuildAll();
-        
-        providerCollection.GetServiceProvider(ServiceProviderKeys.ServiceProviderKeyOne)
-            .Resolve<GetterService<Guid>>()
-            .GetValue()
-            .Should()
-            .Be(ServiceProviderKeys.ServiceProviderKeyOne);
-        
-        providerCollection.GetServiceProvider(ServiceProviderKeys.ServiceProviderKeyTwo)
-            .Resolve<GetterService<Guid>>()
-            .GetValue()
-            .Should()
-            .Be(ServiceProviderKeys.ServiceProviderKeyTwo);
-    }
-
-    [Fact]
     public void BeConfiguredFromAssembliesWithDefaultBuilderCollection()
     {
         ResetGlobalState();
@@ -150,4 +152,5 @@ public class ServiceProviderBuilderCollectionConfigurationShould : TestBase
             .Should()
             .Be(ServiceProviderKeys.ServiceProviderKeyTwo);
     }
+#endif
 }

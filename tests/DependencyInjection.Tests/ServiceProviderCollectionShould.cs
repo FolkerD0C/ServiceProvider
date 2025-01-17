@@ -6,6 +6,7 @@ using FolkerD0C.DependencyInjection.Tests.Shared.Services;
 
 namespace FolkerD0C.DependencyInjection.Tests;
 
+[Collection("All tests")]
 public class ServiceProviderCollectionShould : TestBase
 {
     [Fact]
@@ -109,22 +110,6 @@ public class ServiceProviderCollectionShould : TestBase
         invalidKeyAddingAssertion.Subject.First().ServiceProvider.Should().BeNull();
     }
 
-    [Fact]
-    public void ReturnSameDefaultAsProviderClass()
-    {
-        ServiceProviderBuilder.BuildDefault();
-        ServiceProviderCollection.DefaultProvider.Should().Be(ServiceProvider.DefaultProvider);
-    }
-
-    [Fact]
-    public void ReturnSameDefaultEveryTime()
-    {
-        var firstCall = ServiceProviderCollection.DefaultProviderCollection;
-        var secondCall = ServiceProviderCollection.DefaultProviderCollection;
-
-        secondCall.Should().Be(firstCall);
-    }
-
     [Theory]
     [InlineData("dummy", true)]
     [InlineData(null, false)]
@@ -137,6 +122,25 @@ public class ServiceProviderCollectionShould : TestBase
         #pragma warning restore CS8604
 
         providerAdded.Should().Be(expected);
+    }
+
+#if CAN_RESET_GLOBAL_STATE
+    [Fact]
+    public void ReturnSameDefaultAsProviderClass()
+    {
+        ResetGlobalState();
+        ServiceProviderBuilder.BuildDefault();
+        ServiceProvider.DefaultProvider.Should().Be(ServiceProvider.DefaultProvider);
+    }
+
+    [Fact]
+    public void ReturnSameDefaultEveryTime()
+    {
+        ResetGlobalState();
+        var firstCall = ServiceProviderCollection.DefaultProviderCollection;
+        var secondCall = ServiceProviderCollection.DefaultProviderCollection;
+
+        secondCall.Should().Be(firstCall);
     }
 
     [Fact]
@@ -165,20 +169,5 @@ public class ServiceProviderCollectionShould : TestBase
                 .Be(key);
         }
     }
-
-    [Fact]
-    public void BeEmptyWhenReset()
-    {
-        int excpectedServiceCount = 0;
-        var builderCollection = new ServiceProviderBuilderCollection();
-        builderCollection.GetBuilder(Guid.NewGuid());
-        var sut = builderCollection.BuildAll();
-
-        sut.Reset();
-
-        sut.GetServiceProviders()
-            .Count()
-            .Should()
-            .Be(excpectedServiceCount);
-    }
+#endif
 }

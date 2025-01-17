@@ -3,7 +3,7 @@ namespace FolkerD0C.DependencyInjection.Collections;
 /// <summary>
 /// Represents a collection of service providers identified by unique keys.
 /// </summary>
-public interface IServiceProviderCollection : IResettable
+public interface IServiceProviderCollection
 {
     /// <summary>
     /// Adds a service provider to the collection with a specified key.

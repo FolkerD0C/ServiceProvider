@@ -7,6 +7,15 @@
 
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
+    <Configurations>Debug;Release;DebugTest;ReleaseTest</Configurations>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugTest|AnyCPU'">
+    <DefineConstants>$(DefineConstants);CAN_RESET_GLOBAL_STATE</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseTest|AnyCPU'">
+    <DefineConstants>$(DefineConstants);CAN_RESET_GLOBAL_STATE</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>

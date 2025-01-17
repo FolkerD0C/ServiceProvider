@@ -4,6 +4,7 @@ using FolkerD0C.DependencyInjection.Exceptions;
 
 namespace FolkerD0C.DependencyInjection.Tests;
 
+[Collection("All tests")]
 public class ServiceProviderBuilderCollectionShould : TestBase
 {
 
@@ -49,28 +50,12 @@ public class ServiceProviderBuilderCollectionShould : TestBase
     }
 
     [Fact]
-    public void ReturnSameDefaultAsBuilderClass()
-    {
-        ServiceProviderBuilderCollection.DefaultBuilder.Should().Be(ServiceProviderBuilder.DefaultBuilder);
-    }
-
-    [Fact]
     public void BeEmptyWhenCreated()
     {
         var expectedServiceProviderCount = 0;
         var sut = new ServiceProviderBuilderCollection();
 
         sut.BuildAll().GetServiceProviders().Count().Should().Be(expectedServiceProviderCount);
-    }
-
-    [Fact]
-    public void ReturnSameDefaultEveryTime()
-    {
-        ResetGlobalState();
-        var firstCall = ServiceProviderBuilderCollection.DefaultBuilderCollection;
-        var secondCall = ServiceProviderBuilderCollection.DefaultBuilderCollection;
-
-        secondCall.Should().Be(firstCall);
     }
 
     [Fact]
@@ -91,6 +76,23 @@ public class ServiceProviderBuilderCollectionShould : TestBase
         sut.BuildAll().GetServiceProviders().Count().Should().Be(expectedProviderCount);
     }
 
+#if CAN_RESET_GLOBAL_STATE
+    [Fact]
+    public void ReturnSameDefaultAsBuilderClass()
+    {
+        ServiceProviderBuilderCollection.DefaultBuilder.Should().Be(ServiceProviderBuilder.DefaultBuilder);
+    }
+
+    [Fact]
+    public void ReturnSameDefaultEveryTime()
+    {
+        ResetGlobalState();
+        var firstCall = ServiceProviderBuilderCollection.DefaultBuilderCollection;
+        var secondCall = ServiceProviderBuilderCollection.DefaultBuilderCollection;
+
+        secondCall.Should().Be(firstCall);
+    }
+
     [Fact]
     public void BeEmptyWhenDefault()
     {
@@ -104,25 +106,5 @@ public class ServiceProviderBuilderCollectionShould : TestBase
             .Should()
             .Be(expectedProviderCollectionCount);
     }
-
-    [Fact]
-    public void BeEmptyWhenResetAndNotThrowWhenBuiltAgain()
-    {
-        int excpectedServiceCount = 0;
-        var sut = new ServiceProviderBuilderCollection();
-        sut.GetBuilder(Guid.NewGuid());
-
-        sut.Reset();
-        var providerCollection = sut.BuildAll();
-
-        providerCollection.GetServiceProviders()
-            .Count()
-            .Should()
-            .Be(excpectedServiceCount);
-
-        sut.Reset();
-        sut.Invoking(subject => subject.BuildAll())
-            .Should()
-            .NotThrow<ServiceProvidersHaveBeenBuiltException>();
-    }
+#endif
 }

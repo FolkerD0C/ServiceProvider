@@ -6,7 +6,7 @@ namespace FolkerD0C.DependencyInjection.Collections;
 /// <summary>
 /// Represents a collection of service provider builders that can construct a collection of service providers.
 /// </summary>
-public interface IServiceProviderBuilderCollection : IResettable
+public interface IServiceProviderBuilderCollection
 {
     /// <summary>
     /// Builds and returns a collection of service providers from the builders in the collection.

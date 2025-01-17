@@ -6,7 +6,7 @@ namespace FolkerD0C.DependencyInjection;
 /// <summary>
 /// Can build a service provider with support for scoped, singleton, and transient lifetimes.
 /// </summary>
-public interface IServiceProviderBuilder : IResettable
+public interface IServiceProviderBuilder
 {
     /// <summary>
     /// Registers a scoped service with the specified implementation type and expiration scope.
