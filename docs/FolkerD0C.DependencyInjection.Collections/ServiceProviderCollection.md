@@ -13,7 +13,6 @@ public sealed class ServiceProviderCollection : IServiceProviderCollection
 | [AddServiceProvider](ServiceProviderCollection/AddServiceProvider.md)(…) |  |
 | [GetServiceProvider](ServiceProviderCollection/GetServiceProvider.md)(…) |  |
 | [GetServiceProviders](ServiceProviderCollection/GetServiceProviders.md)() |  |
-| [Reset](ServiceProviderCollection/Reset.md)() |  |
 | [TryAddServiceProvider](ServiceProviderCollection/TryAddServiceProvider.md)(…) |  |
 | static [DefaultProvider](ServiceProviderCollection/DefaultProvider.md) { get; } | The default service provider (the same as [`DefaultProvider`](../FolkerD0C.DependencyInjection/ServiceProvider/DefaultProvider.md)). |
 | static readonly [DefaultProviderCollection](ServiceProviderCollection/DefaultProviderCollection.md) | The default service provider collection. |

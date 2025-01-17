@@ -19,7 +19,6 @@ public sealed class ServiceProviderBuilder : IServiceProviderBuilder
 | [Configure](ServiceProviderBuilder/Configure.md)(…) |  |
 | [ConfigureFromAssemblies](ServiceProviderBuilder/ConfigureFromAssemblies.md)(…) |  |
 | [ConfigureFromAssembly](ServiceProviderBuilder/ConfigureFromAssembly.md)(…) |  |
-| [Reset](ServiceProviderBuilder/Reset.md)() |  |
 | static readonly [DefaultBuilder](ServiceProviderBuilder/DefaultBuilder.md) | The default service provider builder. |
 | static [BuildDefault](ServiceProviderBuilder/BuildDefault.md)() | Used only for building the default provider. If it is already built then this method has no effect. |
 | static [ConfigureDefault](ServiceProviderBuilder/ConfigureDefault.md)(…) | Configures the default [`IServiceProviderBuilder`](./IServiceProviderBuilder.md) using the specified *configuration*. |

@@ -4,7 +4,6 @@
 
 | public type | description |
 | --- | --- |
-| interface [IResettable](./FolkerD0C.DependencyInjection/IResettable.md) | Defines an interface for objects that can be reset to their initial state. |
 | interface [IServiceProvider](./FolkerD0C.DependencyInjection/IServiceProvider.md) | Provides services that are registered in an [`IServiceProviderBuilder`](./FolkerD0C.DependencyInjection/IServiceProviderBuilder.md). |
 | interface [IServiceProviderBuilder](./FolkerD0C.DependencyInjection/IServiceProviderBuilder.md) | Can build a service provider with support for scoped, singleton, and transient lifetimes. |
 | interface [IServiceScope](./FolkerD0C.DependencyInjection/IServiceScope.md) | Defines a contract for objects that have an expiration scope. If a scope is expired then the object is recreated. If a scope is renewable then it gets renewed after expiration. |
